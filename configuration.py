@@ -40,3 +40,8 @@ portal_orange_image = "res/portal_orange.png"
 portal_width = 70
 portal_height = 80
 
+# Directions
+UP = 1
+DOWN = -1
+RIGHT = 2
+LEFT = -2

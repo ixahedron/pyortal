@@ -9,3 +9,5 @@ class Platform(pygame.sprite.Sprite):
     self.image = pygame.transform.scale(pygame.image.load(platform_image), (width, height))
 
     self.rect = self.image.get_rect()
+
+    self.portalable = True

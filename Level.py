@@ -61,7 +61,7 @@ class Level():
     if self.portal_orange.sprite is not None:
       self.portal_orange.sprite.rect.x += shift_x
 
-  def open_blue_portal(self, (click_x, click_y)):
+  def open_portal(self, (click_x, click_y), is_blue):
 
     platform_for_portal = [p for p in self.platforms if p.rect.collidepoint(click_x, click_y)]
     can_open = len(platform_for_portal) > 0
@@ -70,31 +70,24 @@ class Level():
       width = platform_for_portal[0].rect.width + 4 if platform_for_portal[0].rect.width < portal_width else portal_width
       height = platform_for_portal[0].rect.height + 4 if platform_for_portal[0].rect.height < portal_height else portal_height
 
-      self.portal_blue.sprite = Portal_blue(width, height)
+      if is_blue:
+        self.portal_blue.sprite = Portal_opened(width, height, is_blue)
+        
+        x = click_x - 0.5 * self.portal_blue.sprite.rect.width
+        y = click_y - 0.5 * self.portal_blue.sprite.rect.height
+        
+        self.portal_blue.sprite.rect.x = x
+        self.portal_blue.sprite.rect.y = y
+    
+      else:
+        self.portal_orange.sprite = Portal_opened(width, height, is_blue)
+        
+        x = click_x - 0.5 * width
+        y = click_y - 0.5 * height
+    
+        self.portal_orange.sprite.rect.x = x
+        self.portal_orange.sprite.rect.y = y
   
-      x = click_x - 0.5 * self.portal_blue.sprite.rect.width
-      y = click_y - 0.5 * self.portal_blue.sprite.rect.height
-    
-      self.portal_blue.sprite.rect.x = x
-      self.portal_blue.sprite.rect.y = y
-
-  def open_orange_portal(self, (click_x, click_y)):
-    
-    platform_for_portal = [p for p in self.platforms if p.rect.collidepoint(click_x, click_y)]
-    can_open = len(platform_for_portal) > 0
-
-    if can_open:
-      width = platform_for_portal[0].rect.width + 4 if platform_for_portal[0].rect.width < portal_width else portal_width
-      height = platform_for_portal[0].rect.height + 4 if platform_for_portal[0].rect.height < portal_height else portal_height
-
-      self.portal_orange.sprite = Portal_orange(width, height)
-  
-      x = click_x - 0.5 * width
-      y = click_y - 0.5 * height
-    
-      self.portal_orange.sprite.rect.x = x
-      self.portal_orange.sprite.rect.y = y
-
       
 class Level_01(Level):
 

@@ -11,22 +11,17 @@ class Portal(pygame.sprite.Sprite):
     self.rect = self.image.get_rect()
 
 
-class Portal_blue(Portal):
+class Portal_opened(Portal):
   
-  def __init__(self, width, height):
+  def __init__(self, width, height, is_blue):
     Portal.__init__(self)
 
-    self.image = pygame.transform.scale(pygame.image.load(portal_blue_image), (width, height))
-    
-    self.rect = self.image.get_rect()
+    if is_blue:
+      image_used = portal_blue_image
+    else:
+      image_used = portal_orange_image
 
-
-class Portal_orange(Portal):
-  
-  def __init__(self, width, height):
-    Portal.__init__(self)
-
-    self.image = pygame.transform.scale(pygame.image.load(portal_orange_image), (width, height))
+    self.image = pygame.transform.scale(pygame.image.load(image_used), (width, height))
     
     self.rect = self.image.get_rect()
 

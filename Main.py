@@ -69,9 +69,9 @@ while not end:
 
     if event.type == MOUSEBUTTONUP:
       if event.button == 1:
-        current_level.open_blue_portal(pygame.mouse.get_pos())
+        current_level.open_portal(pygame.mouse.get_pos(), True)
       if event.button == 3:
-        current_level.open_orange_portal(pygame.mouse.get_pos())
+        current_level.open_portal(pygame.mouse.get_pos(), False)
 
 
   active_sprites.update()

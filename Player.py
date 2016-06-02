@@ -1,5 +1,4 @@
 import pygame
-from pygame.locals import *
 from configuration import *
 
 class Player(pygame.sprite.Sprite):
@@ -22,7 +21,17 @@ class Player(pygame.sprite.Sprite):
     # Horizontal movement
     self.rect.x += self.speed_x
 
-    # Collisions after vertical movement
+    # Portal check
+    if pygame.sprite.spritecollide(self, self.level.portal_blue, False):
+      if self.level.portal_orange.sprite is not None:
+        self.rect.x = self.level.portal_orange.sprite.rect.x #+ self.level.portal_orange.sprite.rect.width * 0.5
+        self.rect.y = self.level.portal_orange.sprite.rect.y #+ self.level.portal_orange.sprite.rect.height * 0.5
+    elif pygame.sprite.spritecollide(self, self.level.portal_orange, False):
+      if self.level.portal_blue.sprite is not None:
+        self.rect.x = self.level.portal_blue.sprite.rect.x #+ self.level.portal_blue.sprite.rect.width * 0.5
+        self.rect.y = self.level.portal_blue.sprite.rect.y #+ self.level.portal_blue.sprite.rect.height * 0.5
+
+    # Collisions after horizontal movement
     block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
     for block in block_collisions:
       if self.speed_x > 0:
@@ -32,6 +41,16 @@ class Player(pygame.sprite.Sprite):
 
     # Vertical movement
     self.rect.y += self.speed_y
+
+    # Portal check
+    if pygame.sprite.spritecollide(self, self.level.portal_blue, False):
+      if self.level.portal_orange.sprite is not None:
+        self.rect.x = self.level.portal_orange.sprite.rect.x + self.level.portal_orange.sprite.rect.width * 0.5
+        self.rect.y = self.level.portal_orange.sprite.rect.y + self.level.portal_orange.sprite.rect.height * 0.5
+    elif pygame.sprite.spritecollide(self, self.level.portal_orange, False):
+      if self.level.portal_blue.sprite is not None:
+        self.rect.x = self.level.portal_blue.sprite.rect.x + self.level.portal_blue.sprite.rect.width * 0.5
+        self.rect.y = self.level.portal_blue.sprite.rect.y + self.level.portal_blue.sprite.rect.height * 0.5
 
     # Collisions after vertical movement
     block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
