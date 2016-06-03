@@ -8,8 +8,8 @@ player_start_x = 50
 player_start_y = 200
 window_size = (screen_x, screen_y)
 
-start_right_shift = screen_x * 0.8
-start_left_shift = screen_x * 0.2
+start_right_shift = screen_x * 0.7
+start_left_shift = screen_x * 0.3
 
 block_colour = pygame.Color(205, 133, 63)
 platform_colour = (205, 133, 63)

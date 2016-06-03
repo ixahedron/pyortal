@@ -43,4 +43,5 @@ class Platform(pygame.sprite.Sprite):
       else:
         intersection_point = gip(bottom_left, bottom_right) # TODO direction
    
+    self.intersection_point = intersection_point
     return intersection_point

@@ -63,22 +63,24 @@ class Level():
 
   def open_portal(self, click, is_blue):
 
-    (click_x, click_y) = click
-
-    platform_for_portal = [p for p in self.platforms if p.rect.collidepoint(click_x, click_y)]
-    can_open = len(platform_for_portal) > 0
+    portal_gun_point = (self.player.rect.x + self.player.rect.width, self.player.rect.y + 0.5 * self.player.rect.height)
+    
+    platforms_in_the_way = sorted([p for p in self.platforms if p.intersection(portal_gun_point, click) is not None], key = lambda p: abs(p.intersection_point[1] - portal_gun_point[1]))
+    can_open = len(platforms_in_the_way) > 0
 
     if can_open:
-      width = platform_for_portal[0].rect.width + 4 if platform_for_portal[0].rect.width < portal_width else portal_width
-      height = platform_for_portal[0].rect.height + 4 if platform_for_portal[0].rect.height < portal_height else portal_height
+      platform_for_portal = platforms_in_the_way[0]
+      
+      width = platform_for_portal.rect.width + 4 if platform_for_portal.rect.width < portal_width else portal_width
+      height = platform_for_portal.rect.height + 4 if platform_for_portal.rect.height < portal_height else portal_height
 
-      (portal_x, portal_y) = platform_for_portal[0].intersection((self.player.rect.x + self.player.rect.width, self.player.rect.y + 0.5 * self.player.rect.height), click)
+      (portal_x, portal_y) = platform_for_portal.intersection_point
 
+      x = portal_x - 0.5 * width
+      y = portal_y - 0.5 * height
+        
       if is_blue:
         self.portal_blue.sprite = Portal_opened(width, height, is_blue)
-        
-        x = portal_x - 0.5 * self.portal_blue.sprite.rect.width
-        y = portal_y - 0.5 * self.portal_blue.sprite.rect.height
         
         self.portal_blue.sprite.rect.x = x
         self.portal_blue.sprite.rect.y = y
@@ -86,9 +88,6 @@ class Level():
       else:
         self.portal_orange.sprite = Portal_opened(width, height, is_blue)
         
-        x = portal_x - 0.5 * width
-        y = portal_y - 0.5 * height
-    
         self.portal_orange.sprite.rect.x = x
         self.portal_orange.sprite.rect.y = y
   
