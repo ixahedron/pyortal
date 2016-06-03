@@ -63,7 +63,10 @@ class Level():
 
   def open_portal(self, click, is_blue):
 
-    portal_gun_point = (self.player.rect.x + self.player.rect.width, self.player.rect.y + 0.5 * self.player.rect.height)
+    if self.player.direction == RIGHT:
+      portal_gun_point = (self.player.rect.x + self.player.rect.width, self.player.rect.y + 0.5 * self.player.rect.height)
+    else:
+      portal_gun_point = (self.player.rect.x, self.player.rect.y + 0.5 * self.player.rect.height)
     
     platforms_in_the_way = sorted([p for p in self.platforms if p.intersection(portal_gun_point, click) is not None], key = lambda p: abs(p.intersection_point[1] - portal_gun_point[1]))
     can_open = len(platforms_in_the_way) > 0

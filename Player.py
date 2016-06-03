@@ -11,6 +11,8 @@ class Player(pygame.sprite.Sprite):
     
     self.speed_x = 0
     self.speed_y = 0
+
+    self.direction = RIGHT
     
     self.level = None
 
@@ -64,6 +66,15 @@ class Player(pygame.sprite.Sprite):
       self.speed_y = 0
 
   def move_x(self, dist):
+    if dist < 0:
+      if self.direction == RIGHT:
+        self.direction = LEFT
+        self.image = pygame.transform.flip(self.image, True, False)
+    else:
+      if self.direction == LEFT:
+        self.direction = RIGHT
+        self.image = pygame.transform.flip(self.image, True, False)
+
     self.speed_x = dist
 
   def stop(self):
