@@ -61,7 +61,9 @@ class Level():
     if self.portal_orange.sprite is not None:
       self.portal_orange.sprite.rect.x += shift_x
 
-  def open_portal(self, (click_x, click_y), is_blue):
+  def open_portal(self, click, is_blue):
+
+    (click_x, click_y) = click
 
     platform_for_portal = [p for p in self.platforms if p.rect.collidepoint(click_x, click_y)]
     can_open = len(platform_for_portal) > 0
