@@ -72,11 +72,13 @@ class Level():
       width = platform_for_portal[0].rect.width + 4 if platform_for_portal[0].rect.width < portal_width else portal_width
       height = platform_for_portal[0].rect.height + 4 if platform_for_portal[0].rect.height < portal_height else portal_height
 
+      (portal_x, portal_y) = platform_for_portal[0].intersection((self.player.rect.x + self.player.rect.width, self.player.rect.y + 0.5 * self.player.rect.height), click)
+
       if is_blue:
         self.portal_blue.sprite = Portal_opened(width, height, is_blue)
         
-        x = click_x - 0.5 * self.portal_blue.sprite.rect.width
-        y = click_y - 0.5 * self.portal_blue.sprite.rect.height
+        x = portal_x - 0.5 * self.portal_blue.sprite.rect.width
+        y = portal_y - 0.5 * self.portal_blue.sprite.rect.height
         
         self.portal_blue.sprite.rect.x = x
         self.portal_blue.sprite.rect.y = y
@@ -84,8 +86,8 @@ class Level():
       else:
         self.portal_orange.sprite = Portal_opened(width, height, is_blue)
         
-        x = click_x - 0.5 * width
-        y = click_y - 0.5 * height
+        x = portal_x - 0.5 * width
+        y = portal_y - 0.5 * height
     
         self.portal_orange.sprite.rect.x = x
         self.portal_orange.sprite.rect.y = y

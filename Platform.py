@@ -1,4 +1,5 @@
 from configuration import *
+from geometry import calculateIntersectPoint
 import pygame
 
 class Platform(pygame.sprite.Sprite):
@@ -12,7 +13,10 @@ class Platform(pygame.sprite.Sprite):
 
     self.portalable = True
 
-  def intersection(x1, y1, x2, y2):
+  def intersection(self, p1, p2):
+    (x1, y1) = p1
+    (x2, y2) = p2
+
     from_left = False
     from_top = False
 
@@ -26,23 +30,17 @@ class Platform(pygame.sprite.Sprite):
     if y1 < y2:
       from_top = True
 
+    gip = lambda p3, p4: calculateIntersectPoint(p1, p2, p3, p4)
+
     if from_left:
-      
-      intersection_point = None # TODO calculation
-      
-      if intersection_point is None:
-        if from_top:
-          intersection_point = None # TODO calculation
-        else:
-          intersection_point = None # TODO calculation
-  
+      intersection_point = gip(top_left, bottom_left) # TODO direction
     else:
-      intersection_point = None # TODO calculation
+      intersection_point = gip(top_right, bottom_right) # TODO direction
       
-      if intersection_point is None:
-        if from_top:
-          intersection_point = None # TODO calculation
-        else:
-          intersection_point = None # TODO calculation
-    
+    if intersection_point is None:
+      if from_top:
+        intersection_point = gip(top_left, top_right) # TODO direction
+      else:
+        intersection_point = gip(bottom_left, bottom_right) # TODO direction
+   
     return intersection_point

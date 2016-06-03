@@ -61,6 +61,9 @@ while not end:
       if event.key == K_UP or event.key == K_SPACE or event.key == K_w:
         player.jump(jump_height)
     
+      if event.key == K_ESCAPE or event.key == K_q:
+        end = True
+            
     if event.type == KEYUP:
       if (event.key == K_LEFT or event.key == K_a) and player.speed_x < 0:
         player.stop()
