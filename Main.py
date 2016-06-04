@@ -78,7 +78,7 @@ while not end:
   active_sprites.update()
   current_level.update()
 
-  if player.rect.right >= start_right_shift:
+  if player.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width: # so that the world doesn't shift if exit is in sight
     diff = start_right_shift - player.rect.right
     player.rect.right = start_right_shift
     current_level.shift_world(diff)
