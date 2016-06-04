@@ -117,18 +117,36 @@ class Player(pygame.sprite.Sprite):
     if fst_portal_dir == LEFT:
       if snd_portal_dir == LEFT:
         self.speed_x *= -1
+      if snd_portal_dir == DOWN:
+        self.speed_y = abs(self.speed_x)
+        self.speed_x = 0
+      if snd_portal_dir == UP:
+        self.speed_y = -abs(self.speed_x)
+        self.speed_x = 0
     if fst_portal_dir == RIGHT:
       if snd_portal_dir == RIGHT:
         self.speed_x *= -1
+      if snd_portal_dir == DOWN:
+        self.speed_y = abs(self.speed_x)
+        self.speed_x = 0
+      if snd_portal_dir == UP:
+        self.speed_y = -abs(self.speed_x)
+        self.speed_x = 0
     if fst_portal_dir == UP:
       if snd_portal_dir == UP:
         self.speed_y *= -1
+      if snd_portal_dir == RIGHT:
+        self.speed_x = abs(self.speed_y)
+        self.speed_y = 1
+      if snd_portal_dir == LEFT:
+        self.speed_x = -abs(self.speed_y)
+        self.speed_y = 1
     if fst_portal_dir == DOWN:
       if snd_portal_dir == DOWN:
         self.speed_y *= -1
       if snd_portal_dir == RIGHT:
-        self.speed_x = self.speed_y
+        self.speed_x = abs(self.speed_y)
         self.speed_y = 1
       if snd_portal_dir == LEFT:
-        self.speed_x = -self.speed_y
+        self.speed_x = -abs(self.speed_y)
         self.speed_y = 1
