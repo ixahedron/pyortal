@@ -26,12 +26,14 @@ class Player(pygame.sprite.Sprite):
     # Portal check
     if pygame.sprite.spritecollide(self, self.level.portal_blue, False):
       if self.level.portal_orange.sprite is not None:
-        self.rect.x = self.level.portal_orange.sprite.rect.x #+ self.level.portal_orange.sprite.rect.width * 0.5
-        self.rect.y = self.level.portal_orange.sprite.rect.y #+ self.level.portal_orange.sprite.rect.height * 0.5
+        self.rect.x = self.level.portal_orange.sprite.rect.x + self.level.portal_orange.sprite.direction[0]
+        self.rect.y = self.level.portal_orange.sprite.rect.y + self.level.portal_orange.sprite.direction[1]
+        self.change_direction(True)
     elif pygame.sprite.spritecollide(self, self.level.portal_orange, False):
       if self.level.portal_blue.sprite is not None:
-        self.rect.x = self.level.portal_blue.sprite.rect.x #+ self.level.portal_blue.sprite.rect.width * 0.5
-        self.rect.y = self.level.portal_blue.sprite.rect.y #+ self.level.portal_blue.sprite.rect.height * 0.5
+        self.rect.x = self.level.portal_blue.sprite.rect.x + self.level.portal_blue.sprite.direction[0]
+        self.rect.y = self.level.portal_blue.sprite.rect.y + self.level.portal_blue.sprite.direction[1]
+        self.change_direction(False)
 
     # Collisions after horizontal movement
     block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
@@ -47,12 +49,14 @@ class Player(pygame.sprite.Sprite):
     # Portal check
     if pygame.sprite.spritecollide(self, self.level.portal_blue, False):
       if self.level.portal_orange.sprite is not None:
-        self.rect.x = self.level.portal_orange.sprite.rect.x + self.level.portal_orange.sprite.rect.width * 0.5
-        self.rect.y = self.level.portal_orange.sprite.rect.y + self.level.portal_orange.sprite.rect.height * 0.5
+        self.rect.x = self.level.portal_orange.sprite.rect.x + self.level.portal_orange.sprite.direction[0]
+        self.rect.y = self.level.portal_orange.sprite.rect.y + self.level.portal_orange.sprite.direction[1]
+        self.change_direction(True)
     elif pygame.sprite.spritecollide(self, self.level.portal_orange, False):
       if self.level.portal_blue.sprite is not None:
-        self.rect.x = self.level.portal_blue.sprite.rect.x + self.level.portal_blue.sprite.rect.width * 0.5
-        self.rect.y = self.level.portal_blue.sprite.rect.y + self.level.portal_blue.sprite.rect.height * 0.5
+        self.rect.x = self.level.portal_blue.sprite.rect.x + self.level.portal_blue.sprite.direction[0]
+        self.rect.y = self.level.portal_blue.sprite.rect.y + self.level.portal_blue.sprite.direction[1]
+        self.change_direction(False)
 
     # Collisions after vertical movement
     block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
@@ -94,3 +98,24 @@ class Player(pygame.sprite.Sprite):
     if self.rect.y >= screen_y - self.rect.height and self.speed_y >= 0:
       self.speed_y = 0
       self.rect.y = screen_y - self.rect.height
+
+  def change_direction(self, out_of_the_blue):
+    fst_portal_dir = self.level.portal_blue.sprite.direction
+    snd_portal_dir = self.level.portal_blue.sprite.direction
+    if out_of_the_blue:
+      snd_portal_dir = self.level.portal_orange.sprite.direction
+    else:
+      fst_portal_dir = self.level.portal_orange.sprite.direction
+    
+    if fst_portal_dir == LEFT:
+      if snd_portal_dir == LEFT:
+        self.speed_x *= -1
+    if fst_portal_dir == RIGHT:
+      if snd_portal_dir == RIGHT:
+        self.speed_x *= -1
+    if fst_portal_dir == UP:
+      if snd_portal_dir == UP:
+        self.speed_y *= -1
+    if fst_portal_dir == DOWN:
+      if snd_portal_dir == DOWN:
+        self.speed_y *= -1

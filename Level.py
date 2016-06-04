@@ -68,28 +68,31 @@ class Level():
     else:
       portal_gun_point = (self.player.rect.x, self.player.rect.y + 0.5 * self.player.rect.height)
     
+    # The logic in the key of sorted() function below is off a bit. Consider finding a better condition.
     platforms_in_the_way = sorted([p for p in self.platforms if p.intersection(portal_gun_point, click) is not None], key = lambda p: abs(p.intersection_point[1] - portal_gun_point[1]))
     can_open = len(platforms_in_the_way) > 0
 
     if can_open:
       platform_for_portal = platforms_in_the_way[0]
       
-      width = platform_for_portal.rect.width + 4 if platform_for_portal.rect.width < portal_width else portal_width
-      height = platform_for_portal.rect.height + 4 if platform_for_portal.rect.height < portal_height else portal_height
+      width = platform_for_portal.rect.width if platform_for_portal.rect.width < portal_width else portal_width
+      height = platform_for_portal.rect.height if platform_for_portal.rect.height < portal_height else portal_height
 
       (portal_x, portal_y) = platform_for_portal.intersection_point
 
       x = portal_x - 0.5 * width
       y = portal_y - 0.5 * height
+
+      direction = platform_for_portal.get_portal_direction()
         
       if is_blue:
-        self.portal_blue.sprite = Portal_opened(width, height, is_blue)
+        self.portal_blue.sprite = Portal_opened(width, height, is_blue, direction)
         
         self.portal_blue.sprite.rect.x = x
         self.portal_blue.sprite.rect.y = y
     
       else:
-        self.portal_orange.sprite = Portal_opened(width, height, is_blue)
+        self.portal_orange.sprite = Portal_opened(width, height, is_blue, direction)
         
         self.portal_orange.sprite.rect.x = x
         self.portal_orange.sprite.rect.y = y

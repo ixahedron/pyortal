@@ -41,7 +41,7 @@ portal_width = 70
 portal_height = 80
 
 # Directions
-UP = 1
-DOWN = -1
-RIGHT = 2
-LEFT = -2
+UP = (0, -player_height - 3)
+DOWN = (0, 0.5 * player_height + 3)
+RIGHT = (3, 0)
+LEFT = (-3 - player_width, 0)

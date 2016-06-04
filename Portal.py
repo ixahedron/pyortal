@@ -13,7 +13,7 @@ class Portal(pygame.sprite.Sprite):
 
 class Portal_opened(Portal):
   
-  def __init__(self, width, height, is_blue):
+  def __init__(self, width, height, is_blue, direction):
     Portal.__init__(self)
 
     if is_blue:
@@ -25,3 +25,4 @@ class Portal_opened(Portal):
     
     self.rect = self.image.get_rect()
 
+    self.direction = direction
