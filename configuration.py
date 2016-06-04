@@ -40,8 +40,12 @@ portal_orange_image = "res/portal_orange.png"
 portal_width = 70
 portal_height = 80
 
+exit_image = "res/exit_image.png"
+exit_width = 72
+exit_height = 72
+
 # Directions
 UP = (0, -player_height - 3)
 DOWN = (0, 0.5 * player_height + 3)
-RIGHT = (3, 0)
+RIGHT = (0.5 * player_width + 3, 0)
 LEFT = (-3 - player_width, 0)

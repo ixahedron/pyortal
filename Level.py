@@ -1,6 +1,7 @@
 from configuration import *
 from Platform import *
 from Portal import *
+from Exit import *
 import pygame
 
 class Level():
@@ -10,6 +11,7 @@ class Level():
     self.player = player
     self.portal_blue = pygame.sprite.GroupSingle()
     self.portal_orange = pygame.sprite.GroupSingle()
+    self.exit = pygame.sprite.GroupSingle()
 
     self.world_shift = 0
     
@@ -19,10 +21,12 @@ class Level():
 
   def update(self):
     self.platforms.update()
+    self.portal_blue.update()
+    self.portal_orange.update()
+    self.exit.update()
 
   def draw(self, screen):
     
-    #screen.fill(BLUE)
     screen.blit(self.background, (self.bg_1_x, 0))
     screen.blit(self.background, (self.bg_2_x, 0))
 
@@ -32,6 +36,9 @@ class Level():
       self.portal_blue.draw(screen)
     if self.portal_orange is not None:
       self.portal_orange.draw(screen)
+
+    if self.exit is not None:
+      self.exit.draw(screen)
 
   def shift_world(self, shift_x):
     
@@ -60,6 +67,9 @@ class Level():
       self.portal_blue.sprite.rect.x += shift_x
     if self.portal_orange.sprite is not None:
       self.portal_orange.sprite.rect.x += shift_x
+
+    if self.exit.sprite is not None:
+      self.exit.sprite.rect.x += shift_x
 
   def open_portal(self, click, is_blue):
 
@@ -103,7 +113,7 @@ class Level_01(Level):
   def __init__(self, player):
     Level.__init__(self, player)
 
-    self.level_limit = -1000
+    self.level_limit = -800
     
     self.background = pygame.transform.scale(pygame.image.load(bg_image_01), window_size).convert()
     
@@ -121,3 +131,7 @@ class Level_01(Level):
 
       block.player = self.player
       self.platforms.add(block)
+
+    self.exit.sprite = Exit()
+    self.exit.sprite.rect.x = 1600
+    self.exit.sprite.rect.y = screen_y - exit_height

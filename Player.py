@@ -22,6 +22,10 @@ class Player(pygame.sprite.Sprite):
 
     # Horizontal movement
     self.rect.x += self.speed_x
+    # if self.speed_x > 0:
+    #  self.speed_x -= 0.4
+    #elif self.speed_x < 0:
+    #  self.speed_x = 0
 
     # Portal check
     if pygame.sprite.spritecollide(self, self.level.portal_blue, False):
@@ -92,6 +96,9 @@ class Player(pygame.sprite.Sprite):
     if len(platform_collisions) > 0 or self.rect.bottom >= screen_y:
       self.speed_y = speed
 
+  def on_goal(self):
+    return pygame.sprite.spritecollideany(self, self.level.exit) is not None
+
   def determine_gravity_shift(self):
     self.speed_y = 1 if self.speed_y == 0 else self.speed_y + 0.35
 
@@ -119,3 +126,9 @@ class Player(pygame.sprite.Sprite):
     if fst_portal_dir == DOWN:
       if snd_portal_dir == DOWN:
         self.speed_y *= -1
+      if snd_portal_dir == RIGHT:
+        self.speed_x = self.speed_y
+        self.speed_y = 1
+      if snd_portal_dir == LEFT:
+        self.speed_x = -self.speed_y
+        self.speed_y = 1

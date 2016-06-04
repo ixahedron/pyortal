@@ -37,8 +37,6 @@ player.level = current_level
 active_sprites = pygame.sprite.Group()
 active_sprites.add(player)
 
-# dangers = Dangers(dangers_quantity, 10, bottom_colour)
-
 end = False
 
 while not end:
@@ -89,16 +87,23 @@ while not end:
     diff = start_left_shift - player.rect.left
     player.rect.left = start_left_shift
     current_level.shift_world(diff)
-
+       
+  
   # Check for player still alive
   # if dangers.collision(player.rect):
     #print("Game lost!")
     #end = True
 
   # Goal reached
-  #if world.on_goal(player.rect):
-  #  print("Game won!")
-  #  end = True
+  if player.on_goal():
+    if current_level_number < len(levels)-1:
+      player.rect.x = start_left_shift
+      current_level_number += 1
+      current_level = levels[current_level_number]
+      player.level = current_level
+    else:
+      print("Game won!")
+      end = True
   
   # Render frame
   current_level.draw(screen)
