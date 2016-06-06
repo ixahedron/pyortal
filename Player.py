@@ -25,12 +25,12 @@ class Player(pygame.sprite.Sprite):
     # Horizontal movement
     self.rect.x += self.speed_x
     if not self.movement_key_pressed:
-      if -friction < self.speed_x < friction:
-        self.speed_x = 0
-      elif self.speed_x > 0:
+      if self.speed_x > friction:
         self.speed_x -= friction
-      elif self.speed_x < 0:
+      elif self.speed_x < -friction:
         self.speed_x += friction
+      else:  
+        self.speed_x = 0
 
     # Portal check
     if pygame.sprite.spritecollide(self, self.level.portal_blue, False):
