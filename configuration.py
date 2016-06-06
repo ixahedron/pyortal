@@ -24,6 +24,7 @@ BLUE  = (0, 0, 255)
 
 gravity = 1
 jump_height = -10
+maximum_vertical_velocity = 50
 movement_speed = 5
 
 player_image = "res/ninjacat_2_fix.png"
@@ -41,8 +42,8 @@ portal_width = 70
 portal_height = 80
 
 exit_image = "res/exit_image.png"
-exit_width = 72
-exit_height = 72
+exit_width = 70
+exit_height = 70
 
 # Directions
 UP = (0, -player_height - 3)

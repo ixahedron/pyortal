@@ -113,15 +113,15 @@ class Level_01(Level):
   def __init__(self, player):
     Level.__init__(self, player)
 
-    self.level_limit = -800
-    
     self.background = pygame.transform.scale(pygame.image.load(bg_image_01), window_size).convert()
     
     # every platform: width, height, x, y
-    level = [[1210, 10, 100, 500],
-             [10, 130, 800, 400],
-             [1210, 10, 100, 280],
-             [10, 310, 1500, 180]]
+    level = [[1210, 10, 50, 500],
+             [10, 130, 700, 400],
+             [1210, 10, 50, 280],
+             [10, 310, 1400, 180],
+             [exit_width + 20, int(0.3 * screen_y), 1580, 0],
+             [exit_width + 20, int(0.7 * screen_y - exit_height), 1580, int(0.3 * screen_y + exit_height)]]
 
     for platform in level:
       block = Platform(platform[0], platform[1])
@@ -134,4 +134,4 @@ class Level_01(Level):
 
     self.exit.sprite = Exit()
     self.exit.sprite.rect.x = 1600
-    self.exit.sprite.rect.y = screen_y - exit_height
+    self.exit.sprite.rect.y = 0.3 * screen_y

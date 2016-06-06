@@ -67,6 +67,8 @@ while not end:
         player.stop()
       if (event.key == K_RIGHT or event.key == K_d) and player.speed_x > 0:
         player.stop()
+      if (event.key == K_s):
+        print(player.speed_y)
 
     if event.type == MOUSEBUTTONUP:
       if event.button == 1:

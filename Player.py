@@ -100,7 +100,8 @@ class Player(pygame.sprite.Sprite):
     return pygame.sprite.spritecollideany(self, self.level.exit) is not None
 
   def determine_gravity_shift(self):
-    self.speed_y = 1 if self.speed_y == 0 else self.speed_y + 0.35
+    if self.speed_y < maximum_vertical_velocity:
+      self.speed_y = 1 if self.speed_y == 0 else self.speed_y + 0.35
 
     if self.rect.y >= screen_y - self.rect.height and self.speed_y >= 0:
       self.speed_y = 0
@@ -114,6 +115,7 @@ class Player(pygame.sprite.Sprite):
     else:
       fst_portal_dir = self.level.portal_orange.sprite.direction
     
+    # This is just horrible. TODO: do some school-level geometry magic and figure out how to generalise this calculation.
     if fst_portal_dir == LEFT:
       if snd_portal_dir == LEFT:
         self.speed_x *= -1
