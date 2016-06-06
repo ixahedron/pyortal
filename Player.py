@@ -8,6 +8,8 @@ class Player(pygame.sprite.Sprite):
     self.image = pygame.transform.scale(pygame.image.load(player_image), (player_width, player_height))
     
     self.rect = self.image.get_rect()
+
+    self.movement_key_pressed = False
     
     self.speed_x = 0
     self.speed_y = 0
@@ -22,10 +24,13 @@ class Player(pygame.sprite.Sprite):
 
     # Horizontal movement
     self.rect.x += self.speed_x
-    # if self.speed_x > 0:
-    #  self.speed_x -= 0.4
-    #elif self.speed_x < 0:
-    #  self.speed_x = 0
+    if not self.movement_key_pressed:
+      if -friction < self.speed_x < friction:
+        self.speed_x = 0
+      elif self.speed_x > 0:
+        self.speed_x -= friction
+      elif self.speed_x < 0:
+        self.speed_x += friction
 
     # Portal check
     if pygame.sprite.spritecollide(self, self.level.portal_blue, False):

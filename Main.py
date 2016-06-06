@@ -49,10 +49,12 @@ while not end:
   # Check for keypresses
     if event.type == KEYDOWN:
       if event.key == K_LEFT or event.key == K_a:
+        player.movement_key_pressed = True
         player.move_x(-movement_speed)
       # dangers.move(2)
       
       if event.key == K_RIGHT or event.key == K_d:
+        player.movement_key_pressed = True
         player.move_x(movement_speed)
       # dangers.move(-2)
       
@@ -64,8 +66,10 @@ while not end:
             
     if event.type == KEYUP:
       if (event.key == K_LEFT or event.key == K_a) and player.speed_x < 0:
+        player.movement_key_pressed = False
         player.stop()
       if (event.key == K_RIGHT or event.key == K_d) and player.speed_x > 0:
+        player.movement_key_pressed = False
         player.stop()
       if (event.key == K_s):
         print(player.speed_y)

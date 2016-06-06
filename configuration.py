@@ -26,6 +26,7 @@ gravity = 1
 jump_height = -10
 maximum_vertical_velocity = 50
 movement_speed = 5
+friction = 0.2
 
 player_image = "res/ninjacat_2_fix.png"
 player_width = 40
