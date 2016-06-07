@@ -22,7 +22,7 @@ GREEN = (0, 255, 0)
 RED   = (255, 0, 0)
 BLUE  = (0, 0, 255)
 
-gravity = 1
+gravity = 0.35
 jump_height = -10
 maximum_vertical_velocity = 50
 movement_speed = 5

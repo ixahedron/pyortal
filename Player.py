@@ -106,7 +106,7 @@ class Player(pygame.sprite.Sprite):
 
   def determine_gravity_shift(self):
     if self.speed_y < maximum_vertical_velocity:
-      self.speed_y = 1 if self.speed_y == 0 else self.speed_y + 0.35
+      self.speed_y = 1 if self.speed_y == 0 else self.speed_y + gravity
 
     if self.rect.y >= screen_y - self.rect.height and self.speed_y >= 0:
       self.speed_y = 0
