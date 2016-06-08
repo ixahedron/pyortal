@@ -1,5 +1,7 @@
 import pygame
 
+use_menu = False
+
 game_title = 'Portal 2d wannabe'
 
 screen_x = 800

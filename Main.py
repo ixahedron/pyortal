@@ -9,117 +9,129 @@ from Level import *
 # Initialise mixer
 
 # Initialise pygame
-pygame.init()
+def initialise():
+  pygame.init()
 
-window = pygame.display.set_mode(window_size)
+  window = pygame.display.set_mode(window_size)
 
-pygame.display.set_caption(game_title)
+  pygame.display.set_caption(game_title)
 
-screen = pygame.display.get_surface()
 
-clock = pygame.time.Clock()
+def menu():
+  pass
 
-#Initialise player
-player = Player()
-player.rect.x = player_start_x
-player.rect.y = player_start_y
+def main(first_level_number):
+  screen = pygame.display.get_surface()
+  clock = pygame.time.Clock()
 
-# Initialise levels
-levels = []
-levels.append(Level_01(player))
-
-current_level_number = 0
-current_level = levels[current_level_number]
-
-player.level = current_level
-
-# Initialise variables
-active_sprites = pygame.sprite.Group()
-active_sprites.add(player)
-
-end = False
-
-while not end:
+  #Initialise player
+  player = Player()
+  player.rect.x = player_start_x
+  player.rect.y = player_start_y
   
-  # Check for events
-  for event in pygame.event.get():
-    if event.type == QUIT:
-      end = True
-
-  # Check for keypresses
-    if event.type == KEYDOWN:
-      if event.key == K_LEFT or event.key == K_a:
-        player.movement_key_pressed = True
-        player.move_x(-movement_speed)
-      # dangers.move(2)
-      
-      if event.key == K_RIGHT or event.key == K_d:
-        player.movement_key_pressed = True
-        player.move_x(movement_speed)
-      # dangers.move(-2)
-      
-      if event.key == K_UP or event.key == K_SPACE or event.key == K_w:
-        player.jump(jump_height)
+  # Initialise levels
+  levels = []
+  levels.append(Level_01(player))
+  
+  current_level_number = first_level_number
+  current_level = levels[current_level_number]
+  
+  player.level = current_level
+  
+  # Initialise variables
+  active_sprites = pygame.sprite.Group()
+  active_sprites.add(player)
+  
+  end = False
+  
+  while not end:
     
-      if event.key == K_ESCAPE or event.key == K_q:
+    # Check for events
+    for event in pygame.event.get():
+      if event.type == QUIT:
         end = True
-            
-    if event.type == KEYUP:
-      if (event.key == K_LEFT or event.key == K_a) and player.speed_x < 0:
-        player.movement_key_pressed = False
-        player.stop()
-      if (event.key == K_RIGHT or event.key == K_d) and player.speed_x > 0:
-        player.movement_key_pressed = False
-        player.stop()
-      if (event.key == K_s):
-        print(player.speed_y)
-
-    if event.type == MOUSEBUTTONUP:
-      if event.button == 1:
-        current_level.open_portal(pygame.mouse.get_pos(), True)
-      if event.button == 3:
-        current_level.open_portal(pygame.mouse.get_pos(), False)
-
-
-  active_sprites.update()
-  current_level.update()
-
-  if player.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width: # so that the world doesn't shift if exit is in sight
-    diff = start_right_shift - player.rect.right
-    player.rect.right = start_right_shift
-    current_level.shift_world(diff)
-
-  if player.rect.left <= start_left_shift:
-    diff = start_left_shift - player.rect.left
-    player.rect.left = start_left_shift
-    current_level.shift_world(diff)
-       
   
-  # Check for player still alive
-  # if dangers.collision(player.rect):
-    #print("Game lost!")
-    #end = True
-
-  # Goal reached
-  if player.on_goal():
-    if current_level_number < len(levels)-1:
-      player.rect.x = start_left_shift
-      current_level_number += 1
-      current_level = levels[current_level_number]
-      player.level = current_level
-    else:
-      print("Game won!")
-      end = True
+    # Check for keypresses
+      if event.type == KEYDOWN:
+        if event.key == K_LEFT or event.key == K_a:
+          player.movement_key_pressed = True
+          player.move_x(-movement_speed)
+        # dangers.move(2)
+        
+        if event.key == K_RIGHT or event.key == K_d:
+          player.movement_key_pressed = True
+          player.move_x(movement_speed)
+        # dangers.move(-2)
+        
+        if event.key == K_UP or event.key == K_SPACE or event.key == K_w:
+          player.jump(jump_height)
+      
+        if event.key == K_ESCAPE or event.key == K_q:
+          end = True
+              
+      if event.type == KEYUP:
+        if (event.key == K_LEFT or event.key == K_a) and player.speed_x < 0:
+          player.movement_key_pressed = False
+          player.stop()
+        if (event.key == K_RIGHT or event.key == K_d) and player.speed_x > 0:
+          player.movement_key_pressed = False
+          player.stop()
+        if (event.key == K_s):
+          print(player.movement_key_pressed)
   
-  # Render frame
-  current_level.draw(screen)
-  active_sprites.draw(screen)
-
-  # Set the clock
-  clock.tick(40)
+      if event.type == MOUSEBUTTONUP:
+        if event.button == 1:
+          current_level.open_portal(pygame.mouse.get_pos(), True)
+        if event.button == 3:
+          current_level.open_portal(pygame.mouse.get_pos(), False)
   
-  # Update display
-  pygame.display.update()
+  
+    active_sprites.update()
+    current_level.update()
+  
+    if player.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width: # so that the world doesn't shift if exit is in sight
+      diff = start_right_shift - player.rect.right
+      player.rect.right = start_right_shift
+      current_level.shift_world(diff)
+  
+    if player.rect.left <= start_left_shift:
+      diff = start_left_shift - player.rect.left
+      player.rect.left = start_left_shift
+      current_level.shift_world(diff)
+         
+    
+    # Check for player still alive
+    # if dangers.collision(player.rect):
+      #print("Game lost!")
+      #end = True
+  
+    # Goal reached
+    if player.on_goal():
+      if current_level_number < len(levels)-1:
+        player.rect.x = start_left_shift
+        current_level_number += 1
+        current_level = levels[current_level_number]
+        player.level = current_level
+      else:
+        print("Game won!")
+        end = True
+    
+    # Render frame
+    current_level.draw(screen)
+    active_sprites.draw(screen)
+  
+    # Set the clock
+    clock.tick(40)
+    
+    # Update display
+    pygame.display.update()
+  
+  pygame.display.quit()
+  sys.exit()
 
-pygame.display.quit()
-sys.exit()
+if __name__ == "__main__":
+  initialise()
+  if use_menu:
+    menu()
+  else:
+    main(0)

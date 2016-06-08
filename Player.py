@@ -123,6 +123,7 @@ class Player(pygame.sprite.Sprite):
     # This is just horrible. TODO: do some school-level geometry magic and figure out how to generalise this calculation.
     if fst_portal_dir == LEFT:
       if snd_portal_dir == LEFT:
+        self.movement_key_pressed = False
         self.speed_x *= -1
       if snd_portal_dir == DOWN:
         self.speed_y = abs(self.speed_x)
@@ -132,6 +133,7 @@ class Player(pygame.sprite.Sprite):
         self.speed_x = 0
     if fst_portal_dir == RIGHT:
       if snd_portal_dir == RIGHT:
+        self.movement_key_pressed = False
         self.speed_x *= -1
       if snd_portal_dir == DOWN:
         self.speed_y = abs(self.speed_x)
