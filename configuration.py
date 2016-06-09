@@ -1,6 +1,8 @@
 import pygame
 
-use_menu = False
+use_menu = True
+text_size_menu = 32
+logo_menu = "res/logo_resized.png"
 
 game_title = 'Portal 2d wannabe'
 
