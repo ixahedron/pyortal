@@ -11,7 +11,7 @@ class Platform(pygame.sprite.Sprite):
 
     self.rect = self.image.get_rect()
 
-    self.portalable = True
+    self.portal_supporting = True
 
   def intersection(self, p1, p2):
     (x1, y1) = p1

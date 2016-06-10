@@ -19,7 +19,7 @@ def initialise():
 
 def menu():
   screen = pygame.display.get_surface()
-  menu = Menu(["Start", "Exit"])
+  menu = Menu(("Start", "Exit"))
   menu.draw(screen)
   return menu.controls()
 
@@ -71,6 +71,9 @@ def main(start_with_level_number):
       
         if event.key == K_ESCAPE or event.key == K_q:
           end = True
+        
+        if (event.key == K_f):
+          print("Pickup")
               
       if event.type == KEYUP:
         if (event.key == K_LEFT or event.key == K_a) and player.speed_x < 0:

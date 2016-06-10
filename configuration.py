@@ -41,6 +41,9 @@ bg_image_01 = "res/back_03.jpg"
 
 platform_image = "res/platform_1.jpg"
 
+cube_image = "res/cube_image.png"
+cube_edge = 30
+
 portal_blue_image = "res/portal_blue.png"
 portal_orange_image = "res/portal_orange.png"
 portal_width = 70

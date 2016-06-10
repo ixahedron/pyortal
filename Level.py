@@ -1,6 +1,7 @@
 from configuration import *
 from Platform import *
 from Portal import *
+from Items import *
 from Exit import *
 import pygame
 
@@ -8,6 +9,7 @@ class Level():
 
   def __init__(self, player):
     self.platforms = pygame.sprite.Group()
+    self.cubes = pygame.sprite.Group()
     self.player = player
     self.portal_blue = pygame.sprite.GroupSingle()
     self.portal_orange = pygame.sprite.GroupSingle()
@@ -21,6 +23,7 @@ class Level():
 
   def update(self):
     self.platforms.update()
+    self.cubes.update()
     self.portal_blue.update()
     self.portal_orange.update()
     self.exit.update()
@@ -31,6 +34,7 @@ class Level():
     screen.blit(self.background, (self.bg_2_x, 0))
 
     self.platforms.draw(screen)
+    self.cubes.draw(screen)
 
     if self.portal_blue is not None:
       self.portal_blue.draw(screen)
@@ -63,6 +67,9 @@ class Level():
     for platform in self.platforms:
       platform.rect.x += shift_x
 
+    for cube in self.cubes:
+      cube.rect.x += shift_x
+
     if self.portal_blue.sprite is not None:
       self.portal_blue.sprite.rect.x += shift_x
     if self.portal_orange.sprite is not None:
@@ -79,7 +86,7 @@ class Level():
       portal_gun_point = (self.player.rect.x, self.player.rect.y + 0.5 * self.player.rect.height)
     
     # The logic in the key of sorted() function below is off a bit. Consider finding a better condition.
-    platforms_in_the_way = sorted([p for p in self.platforms if p.intersection(portal_gun_point, click) is not None], key = lambda p: abs(p.intersection_point[1] - portal_gun_point[1]))
+    platforms_in_the_way = sorted([p for p in self.platforms if p.portal_supporting and p.intersection(portal_gun_point, click) is not None], key = lambda p: abs(p.intersection_point[1] - portal_gun_point[1]))
     can_open = len(platforms_in_the_way) > 0
 
     if can_open:
@@ -129,8 +136,20 @@ class Level_01(Level):
       block.rect.x = platform[2]
       block.rect.y = platform[3]
 
-      block.player = self.player
       self.platforms.add(block)
+
+    cubes = [(60, 450),
+             (100, 510)]
+
+    for cube in cubes:
+      block = Cube()
+
+      block.rect.x = cube[0]
+      block.rect.x = cube[1]
+
+      block.level = self
+
+      self.cubes.add(block)
 
     self.exit.sprite = Exit()
     self.exit.sprite.rect.x = 1600
