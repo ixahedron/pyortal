@@ -83,7 +83,7 @@ def main(start_with_level_number):
           player.movement_key_pressed = False
           player.stop()
         if (event.key == K_s):
-          print(player.movement_key_pressed)
+          print(pygame.sprite.spritecollide(current_level.cubes.sprites()[0], current_level.cubes, False))
   
       if event.type == MOUSEBUTTONUP:
         if event.button == 1:

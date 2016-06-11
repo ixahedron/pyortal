@@ -141,8 +141,8 @@ class Level_01(Level):
     cubes = [(60, 450),
              (100, 510)]
 
-    for cube in cubes:
-      block = Cube()
+    for (i, cube) in enumerate(cubes):
+      block = Cube(i)
 
       block.rect.x = cube[0]
       block.rect.x = cube[1]

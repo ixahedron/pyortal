@@ -35,7 +35,7 @@ class MoveableObject(pygame.sprite.Sprite):
 
     # Collisions after horizontal movement
     block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
-    block_collisions = block_collisions + pygame.sprite.spritecollide(self, self.level.cubes, False)
+    block_collisions = block_collisions + pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
     for block in block_collisions:
       if self.speed_x > 0:
         self.rect.right = block.rect.left
@@ -50,8 +50,9 @@ class MoveableObject(pygame.sprite.Sprite):
 
     # Collisions after vertical movement
     block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
+    block_collisions = block_collisions + pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
     for block in block_collisions:
-      if self.speed_y > 0:
+      if self.speed_y >= 0:
         self.rect.bottom = block.rect.top
       elif self.speed_y < 0:
         self.rect.top = block.rect.bottom
@@ -81,6 +82,9 @@ class MoveableObject(pygame.sprite.Sprite):
     if self.rect.y >= screen_y - self.rect.height and self.speed_y >= 0:
       self.speed_y = 0
       self.rect.y = screen_y - self.rect.height
+
+  def collided_callback(self, left, right):
+    return pygame.sprite.collide_rect(left, right)
 
   def through_portal_check(self):
     # Portal check
