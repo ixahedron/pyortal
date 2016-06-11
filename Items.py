@@ -12,6 +12,9 @@ class Cube(MoveableObject):
 
     self.portalable = True
 
+    self.holdable = True
+    self.holded = False
+
     self.ordering_number = ordering_number
 
   def collided_callback(self, left, right):

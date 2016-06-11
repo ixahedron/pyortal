@@ -35,12 +35,9 @@ class MoveableObject(pygame.sprite.Sprite):
 
     # Collisions after horizontal movement
     block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
-    block_collisions = block_collisions + pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
-    for block in block_collisions:
-      if self.speed_x > 0:
-        self.rect.right = block.rect.left
-      elif self.speed_x < 0:
-        self.rect.left = block.rect.right
+    cubes_collisions = pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
+    self.horizontal_collision_handler(block_collisions)
+    self.horizontal_collision_handler(cubes_collisions, True)
 
     # Vertical movement
     self.rect.y += self.speed_y
@@ -52,7 +49,7 @@ class MoveableObject(pygame.sprite.Sprite):
     block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
     block_collisions = block_collisions + pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
     for block in block_collisions:
-      if self.speed_y >= 0:
+      if self.speed_y > 0:
         self.rect.bottom = block.rect.top
       elif self.speed_y < 0:
         self.rect.top = block.rect.bottom
@@ -147,3 +144,11 @@ class MoveableObject(pygame.sprite.Sprite):
       if snd_portal_dir == LEFT:
         self.speed_x = -abs(self.speed_y)
         self.speed_y = 1
+
+  def horizontal_collision_handler(self, block_collisions, with_moveable = False):
+    for block in block_collisions:
+      if self.speed_x > 0:
+        self.rect.right = block.rect.left
+      elif self.speed_x < 0:
+        self.rect.left = block.rect.right
+   

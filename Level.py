@@ -68,7 +68,8 @@ class Level():
       platform.rect.x += shift_x
 
     for cube in self.cubes:
-      cube.rect.x += shift_x
+      if not cube.holded:
+        cube.rect.x += shift_x
 
     if self.portal_blue.sprite is not None:
       self.portal_blue.sprite.rect.x += shift_x
@@ -145,7 +146,7 @@ class Level_01(Level):
       block = Cube(i)
 
       block.rect.x = cube[0]
-      block.rect.x = cube[1]
+      block.rect.y = cube[1]
 
       block.level = self
 

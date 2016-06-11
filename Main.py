@@ -73,7 +73,12 @@ def main(start_with_level_number):
           end = True
         
         if (event.key == K_f):
-          print("Pickup")
+          if player.hands_empty:
+            print("Trying pickup")
+          #  player.try_pickup()
+          else:
+            print("Dropped")
+          #  player.drop_holded()
               
       if event.type == KEYUP:
         if (event.key == K_LEFT or event.key == K_a) and player.speed_x < 0:
