@@ -82,9 +82,9 @@ class Level():
   def open_portal(self, click, is_blue):
 
     if self.player.direction == RIGHT:
-      portal_gun_point = (self.player.rect.x + self.player.rect.width, self.player.rect.y + 0.5 * self.player.rect.height)
+      portal_gun_point = (self.player.rect.right, self.player.rect.centery)
     else:
-      portal_gun_point = (self.player.rect.x, self.player.rect.y + 0.5 * self.player.rect.height)
+      portal_gun_point = (self.player.rect.left, self.player.rect.centery)
     
     # The logic in the key of sorted() function below is off a bit. Consider finding a better condition.
     platforms_in_the_way = sorted([p for p in self.platforms if p.portal_supporting and p.intersection(portal_gun_point, click) is not None], key = lambda p: abs(p.intersection_point[1] - portal_gun_point[1]))
