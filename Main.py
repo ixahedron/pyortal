@@ -58,13 +58,17 @@ def main(start_with_level_number):
       if event.type == KEYDOWN:
         if event.key == K_LEFT or event.key == K_a:
           player.movement_key_pressed = True
-          player.move_x(-movement_speed)
-        # dangers.move(2)
+          player.set_in_motion(-movement_speed)
+          if not player.hands_empty:
+            player.holded_object.movement_key_pressed = True
+            player.holded_object.set_in_motion(-movement_speed)
         
         if event.key == K_RIGHT or event.key == K_d:
           player.movement_key_pressed = True
-          player.move_x(movement_speed)
-        # dangers.move(-2)
+          player.set_in_motion(movement_speed)
+          if not player.hands_empty:
+            player.holded_object.movement_key_pressed = True
+            player.holded_object.set_in_motion(movement_speed)
         
         if event.key == K_UP or event.key == K_SPACE or event.key == K_w:
           player.jump(jump_height)
@@ -75,20 +79,29 @@ def main(start_with_level_number):
         if (event.key == K_f):
           if player.hands_empty:
             print("Trying pickup")
-          #  player.try_pickup()
+            player.try_pickup()
           else:
             print("Dropped")
-          #  player.drop_holded()
+            player.drop_holded()
               
       if event.type == KEYUP:
+
         if (event.key == K_LEFT or event.key == K_a) and player.speed_x < 0:
           player.movement_key_pressed = False
           player.stop()
+          if not player.hands_empty:
+            player.holded_object.movement_key_pressed = False
+            player.holded_object.stop()
+
         if (event.key == K_RIGHT or event.key == K_d) and player.speed_x > 0:
           player.movement_key_pressed = False
           player.stop()
+          if not player.hands_empty:
+            player.holded_object.movement_key_pressed = False
+            player.holded_object.stop()
+
         if (event.key == K_s):
-          print(pygame.sprite.spritecollide(current_level.cubes.sprites()[0], current_level.cubes, False))
+          print(player.holded_object.speed_x)
   
       if event.type == MOUSEBUTTONUP:
         if event.button == 1:
@@ -103,11 +116,15 @@ def main(start_with_level_number):
     if player.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width: # so that the world doesn't shift if exit is in sight
       diff = start_right_shift - player.rect.right
       player.rect.right = start_right_shift
+      if not player.hands_empty:
+        player.holded_object.rect.left = start_right_shift + player.rect.width / 4
       current_level.shift_world(diff)
   
     if player.rect.left <= start_left_shift:
       diff = start_left_shift - player.rect.left
       player.rect.left = start_left_shift
+      if not player.hands_empty:
+        player.holded_object.rect.right = start_left_shift - player.rect.width / 4
       current_level.shift_world(diff)
          
     

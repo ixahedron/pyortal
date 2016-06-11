@@ -21,14 +21,7 @@ class MoveableObject(pygame.sprite.Sprite):
     self.determine_gravity_shift()
 
     # Horizontal movement
-    self.rect.x += self.speed_x
-    if not self.movement_key_pressed:
-      if self.speed_x > friction:
-        self.speed_x -= friction
-      elif self.speed_x < -friction:
-        self.speed_x += friction
-      else:  
-        self.speed_x = 0
+    self.move_x()
 
     # Portal check
     self.through_portal_check()
@@ -40,7 +33,7 @@ class MoveableObject(pygame.sprite.Sprite):
     self.horizontal_collision_handler(cubes_collisions, True)
 
     # Vertical movement
-    self.rect.y += self.speed_y
+    self.move_y()
 
     # Portal check
     self.through_portal_check()
@@ -57,7 +50,7 @@ class MoveableObject(pygame.sprite.Sprite):
       # If the item is now on a platform, set the vertical velocity to zero
       self.speed_y = 0
 
-  def move_x(self, dist):
+  def set_in_motion(self, dist):
     if dist < 0:
       if self.direction == RIGHT:
         self.direction = LEFT
@@ -66,8 +59,21 @@ class MoveableObject(pygame.sprite.Sprite):
       if self.direction == LEFT:
         self.direction = RIGHT
         self.image = pygame.transform.flip(self.image, True, False)
-
+        
     self.speed_x = dist
+
+  def move_x(self):
+    self.rect.x += self.speed_x
+    if not self.movement_key_pressed:
+      if self.speed_x > friction:
+        self.speed_x -= friction
+      elif self.speed_x < -friction:
+        self.speed_x += friction
+      else:  
+        self.speed_x = 0
+    
+  def move_y(self):
+      self.rect.y += self.speed_y
 
   def stop(self):
     self.speed_x = 0
