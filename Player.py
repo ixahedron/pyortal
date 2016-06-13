@@ -15,14 +15,8 @@ class Player(MoveableObject):
     self.holded_object = pygame.sprite.GroupSingle()
     
   def set_in_motion(self, dist):
-    if dist < 0:
-      if self.direction == RIGHT:
-        self.direction = LEFT
-        self.image = pygame.transform.flip(self.image, True, False)
-    else:
-      if self.direction == LEFT:
-        self.direction = RIGHT
-        self.image = pygame.transform.flip(self.image, True, False)
+    if (dist < 0 and self.direction == RIGHT) or (dist > 0 and self.direction == LEFT):
+      self.flip()
 
     self.speed_x = dist if self.hands_empty else 0.75 * dist
 
@@ -82,6 +76,8 @@ class Player(MoveableObject):
       self.hands_empty = False
       self.holded_object = cubes_nearby[0]
       self.holded_object.holded = True
+      if self.holded_object.direction is not self.direction:
+        self.holded_object.flip()
 
 
   def drop_holded(self):

@@ -18,18 +18,14 @@ class Cube(MoveableObject):
     self.order_number = order_number
   
   def set_in_motion(self, dist):
-    if dist < 0:
-      if self.direction == RIGHT:
-        self.direction = LEFT
-        self.image = pygame.transform.flip(self.image, True, False)
-        if self.holded:
-          self.rect.right = self.level.player.rect.left - self.level.player.rect.width / 4
-    else:
-      if self.direction == LEFT:
-        self.direction = RIGHT
-        self.image = pygame.transform.flip(self.image, True, False)
-        if self.holded:
-          self.rect.left = self.level.player.rect.right + self.level.player.rect.width / 4
+    if dist < 0 and self.direction == RIGHT:
+      self.flip()
+      if self.holded:
+        self.rect.right = self.level.player.rect.left - self.level.player.rect.width / 4
+    elif dist > 0 and self.direction == LEFT:
+      self.flip()
+      if self.holded:
+        self.rect.left = self.level.player.rect.right + self.level.player.rect.width / 4
 
     self.speed_x = dist if not self.holded else 0.75 * dist
 

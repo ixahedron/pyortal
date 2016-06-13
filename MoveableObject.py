@@ -27,7 +27,10 @@ class MoveableObject(pygame.sprite.Sprite):
     self.through_portal_check()
 
     # Collisions after horizontal movement
-    self.horizontal_collisions()
+    block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
+    cubes_collisions = pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
+    self.horizontal_collision_handler(block_collisions)
+    self.horizontal_collision_handler(cubes_collisions, True)
 
     # Vertical movement
     self.move_y()
@@ -48,14 +51,8 @@ class MoveableObject(pygame.sprite.Sprite):
       self.speed_y = 0
 
   def set_in_motion(self, dist):
-    if dist < 0:
-      if self.direction == RIGHT:
-        self.direction = LEFT
-        self.image = pygame.transform.flip(self.image, True, False)
-    else:
-      if self.direction == LEFT:
-        self.direction = RIGHT
-        self.image = pygame.transform.flip(self.image, True, False)
+    if (dist < 0 and self.direction == RIGHT) or (dist > 0 and self.direction == LEFT):
+      self.flip()
         
     self.speed_x = dist
 
@@ -99,6 +96,14 @@ class MoveableObject(pygame.sprite.Sprite):
           self.rect.x = self.level.portal_blue.sprite.rect.x + self.level.portal_blue.sprite.direction[0]
           self.rect.y = self.level.portal_blue.sprite.rect.y + self.level.portal_blue.sprite.direction[1]
           self.change_direction(False)
+
+  def flip(self):
+    if self.direction == RIGHT:
+      self.direction = LEFT
+    else:
+      self.direction = RIGHT
+
+    self.image = pygame.transform.flip(self.image, True, False)
 
   def change_direction(self, out_of_the_blue):
     fst_portal_dir = self.level.portal_blue.sprite.direction
@@ -147,12 +152,6 @@ class MoveableObject(pygame.sprite.Sprite):
       if snd_portal_dir == LEFT:
         self.speed_x = -abs(self.speed_y)
         self.speed_y = 1
-
-  def horizontal_collisions(self):  
-    block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
-    cubes_collisions = pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
-    self.horizontal_collision_handler(block_collisions)
-    self.horizontal_collision_handler(cubes_collisions, True)
 
   def horizontal_collision_handler(self, block_collisions, with_moveable = False):
     for block in block_collisions:
