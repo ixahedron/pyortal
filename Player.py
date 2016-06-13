@@ -73,11 +73,11 @@ class Player(MoveableObject):
 
 
   def try_pickup(self):
-    delta = self.rect.width / 4
+    delta = self.rect.width / 3
     if self.direction == LEFT:
       self.rect.x -= delta
     self.rect.width += delta
-    cubes_nearby = sorted(pygame.sprite.spritecollide(self, self.level.cubes, False), key = lambda c: (abs(c.rect.x - self.rect.x), -c.rect.y))
+    cubes_nearby = sorted(pygame.sprite.spritecollide(self, self.level.cubes, False), key = lambda c: (-c.rect.y, abs(c.rect.x - self.rect.x)))
     self.rect.width -= delta
     if self.direction == LEFT:
       self.rect.x += delta

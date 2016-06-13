@@ -78,8 +78,11 @@ def main(start_with_level_number):
         
         if (event.key == K_f):
           if player.hands_empty:
-            print("Trying pickup")
             player.try_pickup()
+            if player.hands_empty:
+              print("Nothing to pick up")
+            else:
+              print("Pickup successful")
           else:
             print("Dropped")
             player.drop_holded()
