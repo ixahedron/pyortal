@@ -27,10 +27,7 @@ class MoveableObject(pygame.sprite.Sprite):
     self.through_portal_check()
 
     # Collisions after horizontal movement
-    block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
-    cubes_collisions = pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
-    self.horizontal_collision_handler(block_collisions)
-    self.horizontal_collision_handler(cubes_collisions, True)
+    self.horizontal_collisions()
 
     # Vertical movement
     self.move_y()
@@ -150,6 +147,12 @@ class MoveableObject(pygame.sprite.Sprite):
       if snd_portal_dir == LEFT:
         self.speed_x = -abs(self.speed_y)
         self.speed_y = 1
+
+  def horizontal_collisions(self):  
+    block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
+    cubes_collisions = pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
+    self.horizontal_collision_handler(block_collisions)
+    self.horizontal_collision_handler(cubes_collisions, True)
 
   def horizontal_collision_handler(self, block_collisions, with_moveable = False):
     for block in block_collisions:

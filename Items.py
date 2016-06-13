@@ -22,13 +22,16 @@ class Cube(MoveableObject):
       if self.direction == RIGHT:
         self.direction = LEFT
         self.image = pygame.transform.flip(self.image, True, False)
+        if self.holded:
+          self.rect.right = self.level.player.rect.left - self.level.player.rect.width / 4
     else:
       if self.direction == LEFT:
         self.direction = RIGHT
         self.image = pygame.transform.flip(self.image, True, False)
+        if self.holded:
+          self.rect.left = self.level.player.rect.right + self.level.player.rect.width / 4
 
-    if not self.holded:
-      self.speed_x = dist
+    self.speed_x = dist if not self.holded else 0.75 * dist
 
   def collided_callback(self, left, right):
     return left.order_number is not right.order_number and MoveableObject.collided_callback(self, left, right)

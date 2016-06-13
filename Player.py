@@ -26,15 +26,6 @@ class Player(MoveableObject):
 
     self.speed_x = dist if self.hands_empty else 0.75 * dist
 
-  def move_x(self):
-    MoveableObject.move_x(self)
-
-    if not self.hands_empty:
-      if self.direction == LEFT:
-        self.holded_object.rect.right = self.rect.left - self.rect.width / 4
-      else:
-        self.holded_object.rect.left = self.rect.right + self.rect.width / 4
-    
   def move_y(self):
     MoveableObject.move_y(self)
     if not self.hands_empty:
@@ -57,13 +48,18 @@ class Player(MoveableObject):
 
   def horizontal_collision_handler(self, block_collisions, with_moveable = False):
     if with_moveable:
+      if not self.hands_empty:
+        if len([b for b in block_collisions if b.order_number != self.holded_object.order_number]) > 0:
+          self.holded_object.stop()
+        else:
+          self.holded_object.speed_x = self.speed_x
       for block in block_collisions:
-        if self.hands_empty or block.order_number is not self.holded_object.order_number:
-          if self.speed_x > 0:
-            self.rect.right = block.rect.left
-          elif self.speed_x < 0:
-            self.rect.left = block.rect.right
-          block.speed_x = 0.4 * self.speed_x
+      # if self.hands_empty or block.order_number is not self.holded_object.order_number:
+        if self.speed_x > 0:
+          self.rect.right = block.rect.left
+        elif self.speed_x < 0:
+          self.rect.left = block.rect.right
+        block.speed_x = 0.4 * self.speed_x
     else:
       for block in block_collisions:
         if self.speed_x > 0:
@@ -77,7 +73,7 @@ class Player(MoveableObject):
     if self.direction == LEFT:
       self.rect.x -= delta
     self.rect.width += delta
-    cubes_nearby = sorted(pygame.sprite.spritecollide(self, self.level.cubes, False), key = lambda c: (-c.rect.y, abs(c.rect.x - self.rect.x)))
+    cubes_nearby = sorted(pygame.sprite.spritecollide(self, self.level.cubes, False), key = lambda c: (c.rect.y, abs(c.rect.x - self.rect.x)))
     self.rect.width -= delta
     if self.direction == LEFT:
       self.rect.x += delta

@@ -104,6 +104,7 @@ def main(start_with_level_number):
             player.holded_object.stop()
 
         if (event.key == K_s):
+          print(player.speed_x)
           print(player.holded_object.speed_x)
   
       if event.type == MOUSEBUTTONUP:
@@ -116,18 +117,19 @@ def main(start_with_level_number):
     active_sprites.update()
     current_level.update()
   
-    if player.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width: # so that the world doesn't shift if exit is in sight
-      diff = start_right_shift - player.rect.right
-      player.rect.right = start_right_shift
+    object_start_shift = player if player.hands_empty else player.holded_object
+    if object_start_shift.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width: # so that the world doesn't shift if exit is in sight
+      diff = start_right_shift - object_start_shift.rect.right
+      object_start_shift.rect.right = start_right_shift
       if not player.hands_empty:
-        player.holded_object.rect.left = start_right_shift + player.rect.width / 4
+        player.rect.right = start_right_shift - player.holded_object.rect.width - player.rect.width / 4
       current_level.shift_world(diff)
   
-    if player.rect.left <= start_left_shift:
-      diff = start_left_shift - player.rect.left
-      player.rect.left = start_left_shift
+    if object_start_shift.rect.left <= start_left_shift:
+      diff = start_left_shift - object_start_shift.rect.left
+      object_start_shift.rect.left = start_left_shift
       if not player.hands_empty:
-        player.holded_object.rect.right = start_left_shift - player.rect.width / 4
+        player.rect.left = start_left_shift + player.holded_object.rect.width + player.rect.width / 4
       current_level.shift_world(diff)
          
     

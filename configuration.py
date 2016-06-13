@@ -1,6 +1,6 @@
 import pygame
 
-use_menu = True
+use_menu = False
 text_size_menu = 32
 logo_menu = "res/logo_resized.png"
 
