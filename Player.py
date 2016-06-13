@@ -22,8 +22,10 @@ class Player(MoveableObject):
 
   def move_y(self):
     MoveableObject.move_y(self)
+
     if not self.hands_empty:
-      self.holded_object.rect.y = self.rect.y
+      if abs(self.rect.y - self.holded_object.rect.y) > self.rect.height * 0.75:
+        self.drop_holded()
 
   def jump(self, speed):
     self.rect.y += 2
@@ -36,6 +38,8 @@ class Player(MoveableObject):
         self.speed_y = speed
       else:
         self.speed_y = 0.7 * speed
+        if self.rect.y == self.holded_object.rect.y:
+          self.holded_object.speed_y = 0.7 * speed
 
   def on_goal(self):
     return pygame.sprite.spritecollideany(self, self.level.exit) is not None
@@ -55,12 +59,7 @@ class Player(MoveableObject):
           self.rect.left = block.rect.right
         block.speed_x = 0.4 * self.speed_x
     else:
-      for block in block_collisions:
-        if self.speed_x > 0:
-          self.rect.right = block.rect.left
-        elif self.speed_x < 0:
-          self.rect.left = block.rect.right
-
+      MoveableObject.horizontal_collision_handler(self, block_collisions, with_moveable)
 
   def try_pickup(self):
     delta = self.rect.width / 3
@@ -78,10 +77,12 @@ class Player(MoveableObject):
       self.holded_object.holded = True
       if self.holded_object.direction is not self.direction:
         self.holded_object.flip()
+      self.holded_object.rect.top = self.rect.top
 
 
   def drop_holded(self):
     self.holded_object.holded = False
     self.holded_object.movement_key_pressed = False
     self.hands_empty = True
+    self.holded_object = None
   

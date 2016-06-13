@@ -40,15 +40,9 @@ class MoveableObject(pygame.sprite.Sprite):
 
     # Collisions after vertical movement
     block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
-    block_collisions = block_collisions + pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
-    for block in block_collisions:
-      if self.speed_y > 0:
-        self.rect.bottom = block.rect.top
-      elif self.speed_y < 0:
-        self.rect.top = block.rect.bottom
-
-      # If the item is now on a platform, set the vertical velocity to zero
-      self.speed_y = 0
+    cubes_collisions = pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
+    self.vertical_collision_handler(block_collisions)
+    self.vertical_collision_handler(cubes_collisions, True)
 
   def set_in_motion(self, dist):
     if (dist < 0 and self.direction is RIGHT) or (dist > 0 and self.direction is LEFT):
@@ -156,3 +150,12 @@ class MoveableObject(pygame.sprite.Sprite):
       elif self.speed_x < 0:
         self.rect.left = block.rect.right
    
+  def vertical_collision_handler(self, block_collisions, with_moveable = False):
+    for block in block_collisions:
+      if self.speed_y > 0:
+        self.rect.bottom = block.rect.top
+      elif self.speed_y < 0:
+        self.rect.top = block.rect.bottom
+
+      # If the item is now on a platform, set the vertical velocity to zero
+      self.speed_y = 0

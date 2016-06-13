@@ -33,8 +33,9 @@ class Cube(MoveableObject):
     return left.order_number is not right.order_number and MoveableObject.collided_callback(self, left, right)
   
   def determine_gravity_shift(self):
-    if self.holded:
+    MoveableObject.determine_gravity_shift(self)
+
+    if self.holded and self.level.player.speed_y == 0 and self.rect.y >= self.level.player.rect.y and self.speed_y > 0:
       self.speed_y = 0
-    else:
-      MoveableObject.determine_gravity_shift(self)
+      self.rect.y = self.level.player.rect.y
 
