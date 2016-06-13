@@ -18,11 +18,11 @@ class Cube(MoveableObject):
     self.order_number = order_number
   
   def set_in_motion(self, dist):
-    if dist < 0 and self.direction == RIGHT:
+    if dist < 0 and self.direction is RIGHT:
       self.flip()
       if self.holded:
         self.rect.right = self.level.player.rect.left - self.level.player.rect.width / 4
-    elif dist > 0 and self.direction == LEFT:
+    elif dist > 0 and self.direction is LEFT:
       self.flip()
       if self.holded:
         self.rect.left = self.level.player.rect.right + self.level.player.rect.width / 4

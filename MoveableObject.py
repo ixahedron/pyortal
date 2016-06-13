@@ -51,7 +51,7 @@ class MoveableObject(pygame.sprite.Sprite):
       self.speed_y = 0
 
   def set_in_motion(self, dist):
-    if (dist < 0 and self.direction == RIGHT) or (dist > 0 and self.direction == LEFT):
+    if (dist < 0 and self.direction is RIGHT) or (dist > 0 and self.direction is LEFT):
       self.flip()
         
     self.speed_x = dist
@@ -98,11 +98,7 @@ class MoveableObject(pygame.sprite.Sprite):
           self.change_direction(False)
 
   def flip(self):
-    if self.direction == RIGHT:
-      self.direction = LEFT
-    else:
-      self.direction = RIGHT
-
+    self.direction = LEFT if self.direction is RIGHT else RIGHT
     self.image = pygame.transform.flip(self.image, True, False)
 
   def change_direction(self, out_of_the_blue):
@@ -114,42 +110,42 @@ class MoveableObject(pygame.sprite.Sprite):
       fst_portal_dir = self.level.portal_orange.sprite.direction
     
     # This is just horrible. TODO: do some school-level geometry magic and figure out how to generalise this calculation.
-    if fst_portal_dir == LEFT:
-      if snd_portal_dir == LEFT:
+    if fst_portal_dir is LEFT:
+      if snd_portal_dir is LEFT:
         self.movement_key_pressed = False
         self.speed_x *= -1
-      if snd_portal_dir == DOWN:
+      if snd_portal_dir is DOWN:
         self.speed_y = abs(self.speed_x)
         self.speed_x = 0
-      if snd_portal_dir == UP:
+      if snd_portal_dir is UP:
         self.speed_y = -abs(self.speed_x)
         self.speed_x = 0
-    if fst_portal_dir == RIGHT:
-      if snd_portal_dir == RIGHT:
+    if fst_portal_dir is RIGHT:
+      if snd_portal_dir is RIGHT:
         self.movement_key_pressed = False
         self.speed_x *= -1
-      if snd_portal_dir == DOWN:
+      if snd_portal_dir is DOWN:
         self.speed_y = abs(self.speed_x)
         self.speed_x = 0
-      if snd_portal_dir == UP:
+      if snd_portal_dir is UP:
         self.speed_y = -abs(self.speed_x)
         self.speed_x = 0
-    if fst_portal_dir == UP:
-      if snd_portal_dir == UP:
+    if fst_portal_dir is UP:
+      if snd_portal_dir is UP:
         self.speed_y *= -1
-      if snd_portal_dir == RIGHT:
+      if snd_portal_dir is RIGHT:
         self.speed_x = abs(self.speed_y)
         self.speed_y = 1
-      if snd_portal_dir == LEFT:
+      if snd_portal_dir is LEFT:
         self.speed_x = -abs(self.speed_y)
         self.speed_y = 1
-    if fst_portal_dir == DOWN:
-      if snd_portal_dir == DOWN:
+    if fst_portal_dir is DOWN:
+      if snd_portal_dir is DOWN:
         self.speed_y *= -1
-      if snd_portal_dir == RIGHT:
+      if snd_portal_dir is RIGHT:
         self.speed_x = abs(self.speed_y)
         self.speed_y = 1
-      if snd_portal_dir == LEFT:
+      if snd_portal_dir is LEFT:
         self.speed_x = -abs(self.speed_y)
         self.speed_y = 1
 

@@ -15,7 +15,7 @@ class Player(MoveableObject):
     self.holded_object = pygame.sprite.GroupSingle()
     
   def set_in_motion(self, dist):
-    if (dist < 0 and self.direction == RIGHT) or (dist > 0 and self.direction == LEFT):
+    if (dist < 0 and self.direction is RIGHT) or (dist > 0 and self.direction is LEFT):
       self.flip()
 
     self.speed_x = dist if self.hands_empty else 0.75 * dist
@@ -64,12 +64,12 @@ class Player(MoveableObject):
 
   def try_pickup(self):
     delta = self.rect.width / 3
-    if self.direction == LEFT:
+    if self.direction is LEFT:
       self.rect.x -= delta
     self.rect.width += delta
     cubes_nearby = sorted(pygame.sprite.spritecollide(self, self.level.cubes, False), key = lambda c: (c.rect.y, abs(c.rect.x - self.rect.x)))
     self.rect.width -= delta
-    if self.direction == LEFT:
+    if self.direction is LEFT:
       self.rect.x += delta
 
     if len(cubes_nearby) > 0:
