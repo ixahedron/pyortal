@@ -11,4 +11,4 @@ class Exit(pygame.sprite.Sprite):
 
     self.rect = self.image.get_rect()
 
-    self.portalable = False
+    self.portal_supporting = False

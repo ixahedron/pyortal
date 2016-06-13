@@ -1,159 +1,88 @@
 import pygame
 from configuration import *
+from MoveableObject import *
 
-class Player(pygame.sprite.Sprite):
+class Player(MoveableObject):
   def __init__(self):
-    pygame.sprite.Sprite.__init__(self)
+    MoveableObject.__init__(self)
 
     self.image = pygame.transform.scale(pygame.image.load(player_image), (player_width, player_height))
-    
     self.rect = self.image.get_rect()
 
-    self.movement_key_pressed = False
+    self.portalable = True
+
+    self.hands_empty = True
+    self.holded_object = pygame.sprite.GroupSingle()
     
-    self.speed_x = 0
-    self.speed_y = 0
+  def set_in_motion(self, dist):
+    if (dist < 0 and self.direction is RIGHT) or (dist > 0 and self.direction is LEFT):
+      self.flip()
 
-    self.direction = RIGHT
-    
-    self.level = None
+    self.speed_x = dist if self.hands_empty else 0.75 * dist
 
-  def update(self):
-    # Change the vertical velocity according to gravity shift
-    self.determine_gravity_shift()
+  def move_y(self):
+    MoveableObject.move_y(self)
 
-    # Horizontal movement
-    self.rect.x += self.speed_x
-    if not self.movement_key_pressed:
-      if self.speed_x > friction:
-        self.speed_x -= friction
-      elif self.speed_x < -friction:
-        self.speed_x += friction
-      else:  
-        self.speed_x = 0
-
-    # Portal check
-    if pygame.sprite.spritecollide(self, self.level.portal_blue, False):
-      if self.level.portal_orange.sprite is not None:
-        self.rect.x = self.level.portal_orange.sprite.rect.x + self.level.portal_orange.sprite.direction[0]
-        self.rect.y = self.level.portal_orange.sprite.rect.y + self.level.portal_orange.sprite.direction[1]
-        self.change_direction(True)
-    elif pygame.sprite.spritecollide(self, self.level.portal_orange, False):
-      if self.level.portal_blue.sprite is not None:
-        self.rect.x = self.level.portal_blue.sprite.rect.x + self.level.portal_blue.sprite.direction[0]
-        self.rect.y = self.level.portal_blue.sprite.rect.y + self.level.portal_blue.sprite.direction[1]
-        self.change_direction(False)
-
-    # Collisions after horizontal movement
-    block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
-    for block in block_collisions:
-      if self.speed_x > 0:
-        self.rect.right = block.rect.left
-      elif self.speed_x < 0:
-        self.rect.left = block.rect.right
-
-    # Vertical movement
-    self.rect.y += self.speed_y
-
-    # Portal check
-    if pygame.sprite.spritecollide(self, self.level.portal_blue, False):
-      if self.level.portal_orange.sprite is not None:
-        self.rect.x = self.level.portal_orange.sprite.rect.x + self.level.portal_orange.sprite.direction[0]
-        self.rect.y = self.level.portal_orange.sprite.rect.y + self.level.portal_orange.sprite.direction[1]
-        self.change_direction(True)
-    elif pygame.sprite.spritecollide(self, self.level.portal_orange, False):
-      if self.level.portal_blue.sprite is not None:
-        self.rect.x = self.level.portal_blue.sprite.rect.x + self.level.portal_blue.sprite.direction[0]
-        self.rect.y = self.level.portal_blue.sprite.rect.y + self.level.portal_blue.sprite.direction[1]
-        self.change_direction(False)
-
-    # Collisions after vertical movement
-    block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
-    for block in block_collisions:
-      if self.speed_y > 0:
-        self.rect.bottom = block.rect.top
-      elif self.speed_y < 0:
-        self.rect.top = block.rect.bottom
-
-      # If the player is now standing on a platform, set the vertical velocity to zero
-      self.speed_y = 0
-
-  def move_x(self, dist):
-    if dist < 0:
-      if self.direction == RIGHT:
-        self.direction = LEFT
-        self.image = pygame.transform.flip(self.image, True, False)
-    else:
-      if self.direction == LEFT:
-        self.direction = RIGHT
-        self.image = pygame.transform.flip(self.image, True, False)
-
-    self.speed_x = dist
-
-  def stop(self):
-    self.speed_x = 0
+    if not self.hands_empty:
+      if abs(self.rect.y - self.holded_object.rect.y) > self.rect.height * 0.75:
+        self.drop_holded()
 
   def jump(self, speed):
     self.rect.y += 2
     platform_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
+    cube_collisions = pygame.sprite.spritecollide(self, self.level.cubes, False)
     self.rect.y -= 2
 
-    if len(platform_collisions) > 0 or self.rect.bottom >= screen_y:
-      self.speed_y = speed
+    if len(platform_collisions + cube_collisions) > 0 or self.rect.bottom >= screen_y:
+      if self.hands_empty:
+        self.speed_y = speed
+      else:
+        self.speed_y = 0.7 * speed
+        if self.rect.y == self.holded_object.rect.y:
+          self.holded_object.speed_y = 0.7 * speed
 
   def on_goal(self):
     return pygame.sprite.spritecollideany(self, self.level.exit) is not None
 
-  def determine_gravity_shift(self):
-    if self.speed_y < maximum_vertical_velocity:
-      self.speed_y = 1 if self.speed_y == 0 else self.speed_y + gravity
-
-    if self.rect.y >= screen_y - self.rect.height and self.speed_y >= 0:
-      self.speed_y = 0
-      self.rect.y = screen_y - self.rect.height
-
-  def change_direction(self, out_of_the_blue):
-    fst_portal_dir = self.level.portal_blue.sprite.direction
-    snd_portal_dir = self.level.portal_blue.sprite.direction
-    if out_of_the_blue:
-      snd_portal_dir = self.level.portal_orange.sprite.direction
+  def horizontal_collision_handler(self, block_collisions, with_moveable = False):
+    if with_moveable:
+      if not self.hands_empty:
+        if len([b for b in block_collisions if b.order_number != self.holded_object.order_number]) > 0:
+          self.holded_object.stop()
+        else:
+          self.holded_object.speed_x = self.speed_x
+      for block in block_collisions:
+      # if self.hands_empty or block.order_number is not self.holded_object.order_number:
+        if self.speed_x > 0:
+          self.rect.right = block.rect.left
+        elif self.speed_x < 0:
+          self.rect.left = block.rect.right
+        block.speed_x = 0.4 * self.speed_x
     else:
-      fst_portal_dir = self.level.portal_orange.sprite.direction
-    
-    # This is just horrible. TODO: do some school-level geometry magic and figure out how to generalise this calculation.
-    if fst_portal_dir == LEFT:
-      if snd_portal_dir == LEFT:
-        self.speed_x *= -1
-      if snd_portal_dir == DOWN:
-        self.speed_y = abs(self.speed_x)
-        self.speed_x = 0
-      if snd_portal_dir == UP:
-        self.speed_y = -abs(self.speed_x)
-        self.speed_x = 0
-    if fst_portal_dir == RIGHT:
-      if snd_portal_dir == RIGHT:
-        self.speed_x *= -1
-      if snd_portal_dir == DOWN:
-        self.speed_y = abs(self.speed_x)
-        self.speed_x = 0
-      if snd_portal_dir == UP:
-        self.speed_y = -abs(self.speed_x)
-        self.speed_x = 0
-    if fst_portal_dir == UP:
-      if snd_portal_dir == UP:
-        self.speed_y *= -1
-      if snd_portal_dir == RIGHT:
-        self.speed_x = abs(self.speed_y)
-        self.speed_y = 1
-      if snd_portal_dir == LEFT:
-        self.speed_x = -abs(self.speed_y)
-        self.speed_y = 1
-    if fst_portal_dir == DOWN:
-      if snd_portal_dir == DOWN:
-        self.speed_y *= -1
-      if snd_portal_dir == RIGHT:
-        self.speed_x = abs(self.speed_y)
-        self.speed_y = 1
-      if snd_portal_dir == LEFT:
-        self.speed_x = -abs(self.speed_y)
-        self.speed_y = 1
+      MoveableObject.horizontal_collision_handler(self, block_collisions, with_moveable)
+
+  def try_pickup(self):
+    delta = self.rect.width / 3
+    if self.direction is LEFT:
+      self.rect.x -= delta
+    self.rect.width += delta
+    cubes_nearby = sorted(pygame.sprite.spritecollide(self, self.level.cubes, False), key = lambda c: (c.rect.y, abs(c.rect.x - self.rect.x)))
+    self.rect.width -= delta
+    if self.direction is LEFT:
+      self.rect.x += delta
+
+    if len(cubes_nearby) > 0:
+      self.hands_empty = False
+      self.holded_object = cubes_nearby[0]
+      self.holded_object.holded = True
+      if self.holded_object.direction is not self.direction:
+        self.holded_object.flip()
+      self.holded_object.rect.top = self.rect.top
+
+
+  def drop_holded(self):
+    self.holded_object.holded = False
+    self.holded_object.movement_key_pressed = False
+    self.hands_empty = True
+    self.holded_object = None
+  

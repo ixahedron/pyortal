@@ -1,5 +1,9 @@
 import pygame
 
+use_menu = False
+text_size_menu = 32
+logo_menu = "res/logo_resized.png"
+
 game_title = 'Portal 2d wannabe'
 
 screen_x = 800
@@ -36,6 +40,9 @@ bg_image_default = "res/back.png"
 bg_image_01 = "res/back_03.jpg"
 
 platform_image = "res/platform_1.jpg"
+
+cube_image = "res/cube_image.png"
+cube_edge = 30
 
 portal_blue_image = "res/portal_blue.png"
 portal_orange_image = "res/portal_orange.png"
