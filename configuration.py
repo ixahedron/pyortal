@@ -15,10 +15,7 @@ window_size = (screen_x, screen_y)
 start_right_shift = screen_x * 0.7
 start_left_shift = screen_x * 0.3
 
-block_colour = pygame.Color(205, 133, 63)
 platform_colour = (205, 133, 63)
-goal_colour = pygame.Color(255, 255, 0)
-bottom_colour = pygame.Color(255, 0, 0)
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -43,6 +40,9 @@ platform_image = "res/platform_1.jpg"
 
 cube_image = "res/cube_image.png"
 cube_edge = 30
+
+button_w = 40
+button_h = 15
 
 portal_blue_image = "res/portal_blue.png"
 portal_orange_image = "res/portal_orange.png"
