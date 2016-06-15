@@ -80,12 +80,12 @@ class MoveableObject(pygame.sprite.Sprite):
   def through_portal_check(self):
     # Portal check
     if self.portalable:
-      if pygame.sprite.spritecollide(self, self.level.portal_blue, False):
+      if pygame.sprite.spritecollideany(self, self.level.portal_blue):
         if self.level.portal_orange.sprite is not None:
           self.rect.x = self.level.portal_orange.sprite.rect.x + self.level.portal_orange.sprite.direction[0]
           self.rect.y = self.level.portal_orange.sprite.rect.y + self.level.portal_orange.sprite.direction[1]
           self.change_direction(True)
-      elif pygame.sprite.spritecollide(self, self.level.portal_orange, False):
+      elif pygame.sprite.spritecollideany(self, self.level.portal_orange):
         if self.level.portal_blue.sprite is not None:
           self.rect.x = self.level.portal_blue.sprite.rect.x + self.level.portal_blue.sprite.direction[0]
           self.rect.y = self.level.portal_blue.sprite.rect.y + self.level.portal_blue.sprite.direction[1]

@@ -41,6 +41,7 @@ platform_image = "res/platform_1.jpg"
 cube_image = "res/cube_image.png"
 cube_edge = 30
 
+button_image = "res/button.png"
 button_w = 40
 button_h = 15
 
