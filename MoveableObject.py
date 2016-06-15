@@ -28,9 +28,12 @@ class MoveableObject(pygame.sprite.Sprite):
 
     # Collisions after horizontal movement
     block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
+    block_collisions += pygame.sprite.spritecollide(self, self.level.doors, False)
     cubes_collisions = pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
+    buttons_collisions = pygame.sprite.spritecollide(self, self.level.buttons, False)
     self.horizontal_collision_handler(block_collisions)
     self.horizontal_collision_handler(cubes_collisions, True)
+    self.horizontal_collision_handler(buttons_collisions)
 
     # Vertical movement
     self.move_y()
@@ -40,9 +43,12 @@ class MoveableObject(pygame.sprite.Sprite):
 
     # Collisions after vertical movement
     block_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
+    block_collisions += pygame.sprite.spritecollide(self, self.level.doors, False)
     cubes_collisions = pygame.sprite.spritecollide(self, self.level.cubes, False, self.collided_callback)
+    buttons_collisions = pygame.sprite.spritecollide(self, self.level.buttons, False)
     self.vertical_collision_handler(block_collisions)
     self.vertical_collision_handler(cubes_collisions, True)
+    self.vertical_collision_handler(buttons_collisions)
 
   def set_in_motion(self, dist):
     if (dist < 0 and self.direction is RIGHT) or (dist > 0 and self.direction is LEFT):

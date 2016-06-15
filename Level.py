@@ -174,7 +174,7 @@ class Level_01(Level):
       door = Door()
 
       door.rect.x = doors[i][0]
-      door.rect.x = doors[i][1]
+      door.rect.bottom = doors[i][1]
 
       door.button = block
 
