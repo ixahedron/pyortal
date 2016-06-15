@@ -2,6 +2,8 @@ from configuration import *
 from Platform import *
 from Portal import *
 from Items import *
+from Button import *
+from Door import *
 from Exit import *
 import pygame
 
@@ -10,6 +12,8 @@ class Level():
   def __init__(self, player):
     self.platforms = pygame.sprite.Group()
     self.cubes = pygame.sprite.Group()
+    self.buttons = pygame.sprite.Group()
+    self.doors = pygame.sprite.Group()
     self.player = player
     self.portal_blue = pygame.sprite.GroupSingle()
     self.portal_orange = pygame.sprite.GroupSingle()
@@ -24,6 +28,8 @@ class Level():
   def update(self):
     self.platforms.update()
     self.cubes.update()
+    self.buttons.update()
+    self.doors.update()
     self.portal_blue.update()
     self.portal_orange.update()
     self.exit.update()
@@ -35,6 +41,8 @@ class Level():
 
     self.platforms.draw(screen)
     self.cubes.draw(screen)
+    self.buttons.draw(screen)
+    self.doors.draw(screen)
 
     if self.portal_blue is not None:
       self.portal_blue.draw(screen)
@@ -70,6 +78,12 @@ class Level():
     for cube in self.cubes:
       if not cube.holded:
         cube.rect.x += shift_x
+    
+    for button in self.buttons:
+      button.rect.x += shift_x
+
+    for door in self.doors:
+      door.rect.x += shift_x
 
     if self.portal_blue.sprite is not None:
       self.portal_blue.sprite.rect.x += shift_x
@@ -147,6 +161,27 @@ class Level_01(Level):
       block.level = self
 
       self.cubes.add(block)
+
+    buttons = [(100, 500)]
+    doors = [(200, 500)]
+
+    for (i, button) in enumerate(buttons):
+      block = Button()
+
+      block.rect.x = button[0]
+      block.rect.bottom = button[1]
+
+      door = Door()
+
+      door.rect.x = doors[i][0]
+      door.rect.x = doors[i][1]
+
+      door.button = block
+
+      block.door = door
+
+      self.doors.add(door)
+      self.buttons.add(block)
 
     self.exit.sprite = Exit()
     self.exit.sprite.rect.x = 1600
