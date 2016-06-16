@@ -165,7 +165,3 @@ class MoveableObject(pygame.sprite.Sprite):
 
       # If the item is now on a platform, set the vertical velocity to zero
       self.speed_y = 0
-
-  def press_buttons(self, buttons_collisions):
-    for button in buttons_collisions:
-      button.press()

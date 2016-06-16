@@ -134,12 +134,19 @@ class Level_01(Level):
     self.background = pygame.transform.scale(pygame.image.load(bg_image_01), window_size).convert()
     
     # every platform: width, height, x, y
-    level = [[1210, 10, 50, 500],
+    level = [
+             [20, screen_y, -300, 0],
+             [1900, 20, -300, 0],
+             [1900, 20, -300, screen_y - 20],
+             [1210, 10, 50, 500],
              [10, 130, 700, 400],
              [1210, 10, 50, 280],
              [10, 310, 1400, 180],
              [exit_width + 20, int(0.3 * screen_y), 1580, 0],
-             [exit_width + 20, int(0.7 * screen_y - exit_height), 1580, int(0.3 * screen_y + exit_height)]]
+             [exit_width + 20, int(0.7 * screen_y - exit_height), 1580, int(0.3 * screen_y + exit_height)]
+             ]
+
+    self.left_border = level[0][2]
 
     for platform in level:
       block = Platform(platform[0], platform[1])
@@ -162,8 +169,14 @@ class Level_01(Level):
 
       self.cubes.add(block)
 
-    buttons = [(100, 500)]
-    doors = [(200, 500)]
+    buttons = [
+               (100, 500),
+               (500, 280)
+               ]
+    doors = [
+             (200, 500),
+             (1570, 0.55 * screen_y)            
+            ]
 
     for (i, button) in enumerate(buttons):
       block = Button()
