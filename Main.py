@@ -77,15 +77,7 @@ def main(start_with_level_number):
           end = True
         
         if (event.key == K_f):
-          if player.hands_empty:
-            player.try_pickup()
-            if player.hands_empty:
-              print("Nothing to pick up")
-            else:
-              print("Pickup successful")
-          else:
-            print("Dropped")
-            player.drop_holded()
+          player.try_pickup() if player.hands_empty else player.drop_holded()
               
       if event.type == KEYUP:
 
@@ -104,8 +96,7 @@ def main(start_with_level_number):
             player.holded_object.stop()
 
         if (event.key == K_s):
-          print(player.speed_y)
-          print(player.holded_object.speed_y)
+          print(current_level.world_shift)
   
       if event.type == MOUSEBUTTONUP:
         if event.button == 1:
@@ -118,14 +109,14 @@ def main(start_with_level_number):
     current_level.update()
   
     object_start_shift = player if player.hands_empty else player.holded_object
-    if object_start_shift.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width: # so that the world doesn't shift if exit is in sight
+    if object_start_shift.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width : # so that the world doesn't shift if exit is in sight
       diff = start_right_shift - object_start_shift.rect.right
       object_start_shift.rect.right = start_right_shift
       if not player.hands_empty:
         player.rect.right = start_right_shift - player.holded_object.rect.width - player.rect.width / 4
       current_level.shift_world(diff)
   
-    if object_start_shift.rect.left <= start_left_shift:
+    if object_start_shift.rect.left <= start_left_shift and current_level.world_shift < -current_level.left_border:
       diff = start_left_shift - object_start_shift.rect.left
       object_start_shift.rect.left = start_left_shift
       if not player.hands_empty:
