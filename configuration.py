@@ -47,7 +47,7 @@ button_h = 15
 
 door_image = "res/platform_1.png"
 door_w = 10
-door_h = 70
+door_h = 200
 
 portal_blue_image = "res/portal_blue.png"
 portal_orange_image = "res/portal_orange.png"

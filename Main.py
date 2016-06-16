@@ -104,8 +104,8 @@ def main(start_with_level_number):
             player.holded_object.stop()
 
         if (event.key == K_s):
-          print(player.speed_y)
-          if not player.hands_empty: print(player.holded_object.speed_y)
+          print(player.speed_x)
+          if not player.hands_empty: print(player.holded_object.speed_x)
   
       if event.type == MOUSEBUTTONUP:
         if event.button == 1:

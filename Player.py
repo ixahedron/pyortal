@@ -29,11 +29,12 @@ class Player(MoveableObject):
 
   def jump(self, speed):
     self.rect.y += 2
-    platform_collisions = pygame.sprite.spritecollide(self, self.level.platforms, False)
-    cube_collisions = pygame.sprite.spritecollide(self, self.level.cubes, False)
+    platform_collisions = pygame.sprite.spritecollideany(self, self.level.platforms)
+    cube_collisions = pygame.sprite.spritecollideany(self, self.level.cubes)
+    button_collisions = pygame.sprite.spritecollideany(self, self.level.buttons)
     self.rect.y -= 2
 
-    if len(platform_collisions + cube_collisions) > 0 or self.rect.bottom >= screen_y:
+    if (platform_collisions or cube_collisions or button_collisions) or self.rect.bottom >= screen_y:
       if self.hands_empty:
         self.speed_y = speed
       else:

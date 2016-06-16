@@ -180,6 +180,8 @@ class Level_01(Level):
 
       block.door = door
 
+      block.level = self
+
       self.doors.add(door)
       self.buttons.add(block)
 
