@@ -96,7 +96,7 @@ def main(start_with_level_number):
             player.holded_object.stop()
 
         if (event.key == K_s):
-          print(current_level.world_shift)
+          print(player.movement_key_pressed)
   
       if event.type == MOUSEBUTTONUP:
         if event.button == 1:

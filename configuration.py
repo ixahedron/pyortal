@@ -51,7 +51,7 @@ door_h = 200
 
 portal_blue_image = "res/portal_blue.png"
 portal_orange_image = "res/portal_orange.png"
-portal_width = 70
+portal_width = 80
 portal_height = 80
 
 exit_image = "res/exit_image.png"

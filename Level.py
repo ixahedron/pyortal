@@ -103,27 +103,33 @@ class Level():
     if can_open:
       platform_for_portal = platforms_in_the_way[0]
       
-      width = platform_for_portal.rect.width if platform_for_portal.rect.width < portal_width else portal_width
-      height = platform_for_portal.rect.height if platform_for_portal.rect.height < portal_height else portal_height
+      direction = platform_for_portal.get_portal_direction()
+      
+      if direction is RIGHT or direction is LEFT:
+        width = int(portal_width * 0.2)
+        height = platform_for_portal.rect.height if platform_for_portal.rect.height < portal_height else portal_height
+      else:
+        width = platform_for_portal.rect.width if platform_for_portal.rect.width < portal_width else portal_width
+        height = int(portal_width * 0.2)
 
       (portal_x, portal_y) = platform_for_portal.intersection_point
 
       x = portal_x - 0.5 * width
       y = portal_y - 0.5 * height
 
-      direction = platform_for_portal.get_portal_direction()
-        
-      if is_blue:
-        self.portal_blue.sprite = Portal_opened(width, height, is_blue, direction)
-        
-        self.portal_blue.sprite.rect.x = x
-        self.portal_blue.sprite.rect.y = y
-    
-      else:
-        self.portal_orange.sprite = Portal_opened(width, height, is_blue, direction)
-        
-        self.portal_orange.sprite.rect.x = x
-        self.portal_orange.sprite.rect.y = y
+      if width > int(portal_width * 0.4) or height > int(portal_height * 0.4):
+
+        if is_blue:
+          self.portal_blue.sprite = Portal_opened(width, height, is_blue, direction)
+          
+          self.portal_blue.sprite.rect.x = x
+          self.portal_blue.sprite.rect.y = y
+      
+        else:
+          self.portal_orange.sprite = Portal_opened(width, height, is_blue, direction)
+          
+          self.portal_orange.sprite.rect.x = x
+          self.portal_orange.sprite.rect.y = y
   
       
 class Level_01(Level):

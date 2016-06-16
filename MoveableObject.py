@@ -134,18 +134,22 @@ class MoveableObject(pygame.sprite.Sprite):
       if snd_portal_dir is UP:
         self.speed_y *= -1
       if snd_portal_dir is RIGHT:
+        self.movement_key_pressed = False
         self.speed_x = abs(self.speed_y)
         self.speed_y = 1
       if snd_portal_dir is LEFT:
+        self.movement_key_pressed = False
         self.speed_x = -abs(self.speed_y)
         self.speed_y = 1
     if fst_portal_dir is DOWN:
       if snd_portal_dir is DOWN:
         self.speed_y *= -1
       if snd_portal_dir is RIGHT:
+        self.movement_key_pressed = False
         self.speed_x = abs(self.speed_y)
         self.speed_y = 1
       if snd_portal_dir is LEFT:
+        self.movement_key_pressed = False
         self.speed_x = -abs(self.speed_y)
         self.speed_y = 1
 

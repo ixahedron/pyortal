@@ -34,7 +34,7 @@ class Button(pygame.sprite.Sprite):
 
     x = self.rect.x
     b = self.rect.bottom
-    self.image = pygame.transform.scale(pygame.image.load(button_image), (button_w, button_h / 2))
+    self.image = pygame.transform.scale(pygame.image.load(button_image), (button_w, int(0.5 * button_h)))
     self.rect = self.image.get_rect()
     self.rect.x = x
     self.rect.bottom = b
