@@ -98,33 +98,39 @@ class Level():
     
     # The logic in the key of sorted() function below is off a bit. Consider finding a better condition.
     platforms_in_the_way = sorted([p for p in self.platforms if p.portal_supporting and p.intersection(portal_gun_point, click) is not None], key = lambda p: abs(p.intersection_point[1] - portal_gun_point[1]))
-    can_open = len(platforms_in_the_way) > 0
+    obstacles = [d for d in self.doors if d.intersection(portal_gun_point, click)]
+    can_open = len(platforms_in_the_way) > 0 and len(obstacles) == 0
 
     if can_open:
       platform_for_portal = platforms_in_the_way[0]
       
-      width = platform_for_portal.rect.width if platform_for_portal.rect.width < portal_width else portal_width
-      height = platform_for_portal.rect.height if platform_for_portal.rect.height < portal_height else portal_height
+      direction = platform_for_portal.get_portal_direction()
+      
+      if direction is RIGHT or direction is LEFT:
+        width = int(portal_width * 0.2)
+        height = platform_for_portal.rect.height if platform_for_portal.rect.height < portal_height else portal_height
+      else:
+        width = platform_for_portal.rect.width if platform_for_portal.rect.width < portal_width else portal_width
+        height = int(portal_width * 0.2)
 
       (portal_x, portal_y) = platform_for_portal.intersection_point
 
       x = portal_x - 0.5 * width
       y = portal_y - 0.5 * height
 
-      direction = platform_for_portal.get_portal_direction()
+      if width > int(portal_width * 0.4) or height > int(portal_height * 0.4):
+
+        portal = Portal_opened(width, height, is_blue, direction)
+        portal.rect.x = x
+        portal.rect.y = y
         
-      if is_blue:
-        self.portal_blue.sprite = Portal_opened(width, height, is_blue, direction)
-        
-        self.portal_blue.sprite.rect.x = x
-        self.portal_blue.sprite.rect.y = y
-    
-      else:
-        self.portal_orange.sprite = Portal_opened(width, height, is_blue, direction)
-        
-        self.portal_orange.sprite.rect.x = x
-        self.portal_orange.sprite.rect.y = y
-  
+        if is_blue:
+          if self.portal_orange.sprite is None or not pygame.sprite.collide_rect(portal, self.portal_orange.sprite):
+            self.portal_blue.sprite = portal
+        else:
+          if self.portal_blue.sprite is None or not pygame.sprite.collide_rect(portal, self.portal_blue.sprite):
+            self.portal_orange.sprite = portal
+          
       
 class Level_01(Level):
 
@@ -175,7 +181,7 @@ class Level_01(Level):
                ]
     doors = [
              (200, 500),
-             (1570, 0.55 * screen_y)            
+             (1570, 0.50 * screen_y)            
             ]
 
     for (i, button) in enumerate(buttons):

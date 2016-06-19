@@ -1,4 +1,5 @@
 from configuration import *
+from geometry import calculateIntersectPoint
 import pygame
 
 class Door(pygame.sprite.Sprite):
@@ -37,3 +38,30 @@ class Door(pygame.sprite.Sprite):
     self.rect = self.image.get_rect()
     self.rect.x = x
     self.rect.bottom = b
+  
+  def intersection(self, p1, p2):
+    (x1, y1) = p1
+    (x2, y2) = p2
+
+    from_left = False
+    from_top = False
+
+    if x1 < x2:
+      from_left = True
+    if y1 < y2:
+      from_top = True
+
+    cip = lambda p3, p4: calculateIntersectPoint(p1, p2, p3, p4)
+
+    if from_left:
+      intersection_point = cip(self.rect.topleft, self.rect.bottomleft) 
+    else:
+      intersection_point = cip(self.rect.topright, self.rect.bottomright) 
+      
+    if intersection_point is None:
+      if from_top:
+        intersection_point = cip(self.rect.topleft, self.rect.topright) 
+      else:
+        intersection_point = cip(self.rect.bottomleft, self.rect.bottomright) 
+
+    return intersection_point is not None

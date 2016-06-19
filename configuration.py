@@ -24,7 +24,7 @@ RED   = (255, 0, 0)
 BLUE  = (0, 0, 255)
 
 gravity = 0.35
-jump_height = -10
+jump_height = -8.5
 maximum_vertical_velocity = 50
 movement_speed = 5
 friction = 0.2
@@ -47,11 +47,11 @@ button_h = 15
 
 door_image = "res/platform_1.png"
 door_w = 10
-door_h = 200
+door_h = 160
 
 portal_blue_image = "res/portal_blue.png"
 portal_orange_image = "res/portal_orange.png"
-portal_width = 70
+portal_width = 80
 portal_height = 80
 
 exit_image = "res/exit_image.png"
