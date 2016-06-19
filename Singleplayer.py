@@ -5,25 +5,10 @@ from pygame.locals import *
 from configuration import *
 from Player import *
 from Level import *
-from Menu import *
 
 # Initialise mixer
 
-# Initialise pygame
-def initialise():
-  pygame.init()
-
-  window = pygame.display.set_mode(window_size)
-
-  pygame.display.set_caption(game_title)
-
-def menu():
-  screen = pygame.display.get_surface()
-  menu = Menu(("Start", "Exit"))
-  menu.draw(screen)
-  return menu.controls()
-
-def main(start_with_level_number):
+def main():
   screen = pygame.display.get_surface()
   clock = pygame.time.Clock()
 
@@ -36,7 +21,7 @@ def main(start_with_level_number):
   levels = []
   levels.append(Level_01(player))
   
-  current_level_number = start_with_level_number
+  current_level_number = 0 # start_with_level_number
   current_level = levels[current_level_number]
   
   player.level = current_level
@@ -150,13 +135,3 @@ def main(start_with_level_number):
     # Update display
     pygame.display.update()
   
-
-if __name__ == "__main__":
-  initialise()
-  if use_menu:
-    level_no = menu()
-    main(level_no)
-  else:
-    main(0)
-  pygame.display.quit()
-  sys.exit()

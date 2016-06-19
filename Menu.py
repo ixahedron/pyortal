@@ -1,14 +1,29 @@
-from configuration import *
-
 import sys
 import pygame
 from pygame.locals import *
 
-if not pygame.display.get_init():
-  pygame.display.init()
+from configuration import *
+import Singleplayer
 
-if not pygame.font.get_init():
-  pygame.font.init()
+# Initialise pygame
+def initialise():
+  pygame.init()
+  
+  if not pygame.display.get_init():
+    pygame.display.init()
+
+  if not pygame.font.get_init():
+    pygame.font.init()
+
+  window = pygame.display.set_mode(window_size)
+
+  pygame.display.set_caption(game_title)
+
+def menu():
+  screen = pygame.display.get_surface()
+  menu = Menu(("Multiplayer", "Singleplayer", "Exit"))
+  menu.draw(screen)
+  return menu.controls()
 
 class Menu():
 
@@ -18,8 +33,9 @@ class Menu():
     for option in options_list:
       self.options.add(Option(option))
 
-    for (i, option) in enumerate(reversed(list(self.options))):
-      option.rect.y = screen_y - 100 - (i+1) * 100
+    #for (i, option) in enumerate(reversed(list(self.options))):
+    for (i, option) in enumerate(self.options):
+      option.rect.y = screen_y - 50 - (i+1) * 100
 
     # self.background = pygame.transform.scale(pygame.image.load(menu_image), window_size).convert() # perhaps if I find the image
     self.background = pygame.Surface(window_size)
@@ -53,11 +69,12 @@ class Menu():
         if event.type == MOUSEBUTTONUP:
           if event.button == 1:
             for option in self.options:
-              if option.text == "Start" and option.rect.collidepoint(pygame.mouse.get_pos()):
-                return 0
+              if option.text == "Singleplayer" and option.rect.collidepoint(pygame.mouse.get_pos()):
+                return Singleplayer.main
+              elif option.text == "Multiplayer" and option.rect.collidepoint(pygame.mouse.get_pos()):
+                return Multiplayer.main
               elif option.text == "Exit" and option.rect.collidepoint(pygame.mouse.get_pos()):
-                pygame.display.quit()
-                sys.exit()
+                not_chosen = False
         pygame.display.update()
       pygame.time.wait(8)
     pygame.display.quit()
@@ -83,4 +100,16 @@ class Option(pygame.sprite.Sprite):
     self.image.blit(self.textr, (20, 20))
 
     self.rect = self.image.get_rect()
-    self.rect.x = screen_x / 2 - width / 2 - 20
+    self.rect.x = screen_x / 2 - width / 2 - 2
+
+
+if __name__ == "__main__":
+  initialise()
+  if use_menu:
+    mode_main = menu()
+    mode_main()
+    # Multiplayer.main()
+  else:
+    Singleplayer.main()
+  pygame.display.quit()
+  sys.exit()
