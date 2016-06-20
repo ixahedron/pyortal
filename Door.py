@@ -23,7 +23,7 @@ class Door(pygame.sprite.Sprite):
     x = self.rect.x
     b = self.rect.bottom
     # self.image = pygame.transform.scale(pygame.image.load(door_image), (door_w, door_h / 10))
-    self.image = pygame.transform.scale(self.image, (door_w, door_h / 10))
+    self.image = pygame.transform.scale(self.image, (door_w, int(0.1 * door_h)))
     self.rect = self.image.get_rect()
     self.rect.x = x
     self.rect.bottom = b
