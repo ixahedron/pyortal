@@ -14,6 +14,7 @@ class Cube(MoveableObject):
 
     self.holdable = True
     self.holded = False
+    self.holded_by = None
 
     self.order_number = order_number
   
@@ -21,11 +22,11 @@ class Cube(MoveableObject):
     if dist < 0 and self.direction is RIGHT:
       self.flip()
       if self.holded:
-        self.rect.right = self.level.player.rect.left - self.level.player.rect.width / 4
+        self.rect.right = self.holded_by.rect.left - self.holded_by.rect.width / 4
     elif dist > 0 and self.direction is LEFT:
       self.flip()
       if self.holded:
-        self.rect.left = self.level.player.rect.right + self.level.player.rect.width / 4
+        self.rect.left = self.holded_by.rect.right + self.holded_by.rect.width / 4
 
     self.speed_x = dist if not self.holded else 0.75 * dist
 
@@ -35,7 +36,7 @@ class Cube(MoveableObject):
   def determine_gravity_shift(self):
     MoveableObject.determine_gravity_shift(self)
 
-    if self.holded and self.level.player.speed_y == 0 and self.rect.y >= self.level.player.rect.y and self.speed_y > 0:
+    if self.holded and self.holded_by.speed_y == 0 and self.rect.y >= self.holded_by.rect.y and self.speed_y > 0:
       self.speed_y = 0
-      self.rect.y = self.level.player.rect.y
+      self.rect.y = self.holded_by.rect.y
 

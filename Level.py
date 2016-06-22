@@ -73,6 +73,9 @@ class Level():
 
     self.world_shift += shift_x
 
+    if self.player2 is not None:
+      self.player2.rect.x += shift_x
+
     for platform in self.platforms:
       platform.rect.x += shift_x
 
@@ -178,11 +181,11 @@ class Level_01(Level):
 
     buttons = [
                (100, 500),
-               (500, 280)
+       #        (500, 280)
                ]
     doors = [
              (200, 500),
-             (1570, 0.50 * screen_y)            
+        #     (1570, 0.50 * screen_y)            
             ]
 
     for (i, button) in enumerate(buttons):

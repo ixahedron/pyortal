@@ -10,7 +10,7 @@ from Level import *
 # Initialise mixer
 
 # Init server
-def init_server():
+def init_server(port = None):
   
   # Create a TCP socket.
   ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
@@ -19,8 +19,8 @@ def init_server():
   ss.settimeout(15)
   
   # We will accept connections from all IPs on port 10101
-  p = int(input())
-  ss.bind(('0.0.0.0', p))
+  port = port if port is not None else int(input())
+  ss.bind(('0.0.0.0', port))
   # We will accept all connections with zero backlog.
   ss.listen(0)
   
@@ -33,33 +33,21 @@ def init_server():
   return (ss, cs)
 
 # Init client
-def init_client():
+def init_client(port = None):
   
   # Create a TCP socket.
   cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
   # Flush on every send.
   cs.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
   
-  p = int(input())
+  port = port if port is not None else int(input())
   # Connect to the server on the specified host and port.
-  cs.connect((mp_host, p))
+  cs.connect((mp_host, port))
   # Not block on read if nothing has been sent by the server, fail with exception.
   cs.setblocking(False)
 
   return cs
 
-def init_network():
-  
-  # Send smth. to the server.
-  cs.send('c')
-  # Try reading a char from the server, continue if nothing sent.
-  try:
-    cs.recv(1)
-  except socket.error:
-    pass
-  # Kill the server connection.
-  cs.shutdown(socket.SHUT_RDWR)
-  
 
 def main():
   screen = pygame.display.get_surface()
@@ -68,11 +56,11 @@ def main():
   order = int(input())
 
   if order == 1:
-    (ss, scs) = init_server()
-    cs = init_client()
+    (ss, scs) = init_server(mp_port1)
+    cs = init_client(mp_port2)
   else:
-    cs = init_client()
-    (ss, scs) = init_server()
+    cs = init_client(mp_port1)
+    (ss, scs) = init_server(mp_port2)
 
   #Initialise player
   player = Player()
@@ -82,7 +70,6 @@ def main():
   player2 = Player()
   player2.rect.x = player_start_x + ((order + 1) % 2) * 100
   player2.rect.y = player_start_y
-
 
   # Initialise levels
   levels = []
@@ -106,11 +93,13 @@ def main():
     # Check for events
     for event in pygame.event.get():
       if event.type == QUIT:
+        cs.send('q')
         end = True
   
     # Check for keypresses
       if event.type == KEYDOWN:
         if event.key == K_LEFT or event.key == K_a:
+          cs.send('a')
           player.movement_key_pressed = True
           player.set_in_motion(-movement_speed)
           if not player.hands_empty:
@@ -118,6 +107,7 @@ def main():
             player.holded_object.set_in_motion(-movement_speed)
         
         if event.key == K_RIGHT or event.key == K_d:
+          cs.send('d')
           player.movement_key_pressed = True
           player.set_in_motion(movement_speed)
           if not player.hands_empty:
@@ -125,24 +115,22 @@ def main():
             player.holded_object.set_in_motion(movement_speed)
         
         if event.key == K_UP or event.key == K_SPACE or event.key == K_w:
+          cs.send('w')
           player.jump(jump_height)
       
         if event.key == K_ESCAPE or event.key == K_q:
+          cs.send('q')
           end = True
         
         if (event.key == K_f):
+          cs.send('f')
           player.try_pickup() if player.hands_empty else player.drop_holded()
               
       if event.type == KEYUP:
 
-        if (event.key == K_LEFT or event.key == K_a) and player.speed_x < 0:
-          player.movement_key_pressed = False
-          player.stop()
-          if not player.hands_empty:
-            player.holded_object.movement_key_pressed = False
-            player.holded_object.stop()
-
-        if (event.key == K_RIGHT or event.key == K_d) and player.speed_x > 0:
+        if (((event.key == K_LEFT or event.key == K_a) and player.speed_x < 0) or
+            ((event.key == K_RIGHT or event.key == K_d) and player.speed_x > 0)):
+          cs.send('u')
           player.movement_key_pressed = False
           player.stop()
           if not player.hands_empty:
@@ -158,6 +146,45 @@ def main():
         if event.button == 3:
           current_level.open_portal(pygame.mouse.get_pos(), False)
   
+    try_receiving = True
+    commands = []
+    while try_receiving:
+      # Try reading a char from the server, continue if nothing sent.
+      try:
+        received = scs.recv(1)
+        if received == "q":
+          try_receiving = False
+          end = True
+          continue
+        commands.append(received)
+      except socket.error:
+        try_receiving = False
+
+    for comm in commands:
+      if comm == "a":
+        player2.movement_key_pressed = True
+        player2.set_in_motion(-movement_speed)
+        if not player2.hands_empty:
+          player2.holded_object.movement_key_pressed = True
+          player2.holded_object.set_in_motion(-movement_speed)
+      elif comm == "d":
+        player2.movement_key_pressed = True
+        player2.set_in_motion(movement_speed)
+        if not player2.hands_empty:
+          player2.holded_object.movement_key_pressed = True
+          player2.holded_object.set_in_motion(movement_speed)
+      elif comm == "u":
+        player2.movement_key_pressed = False
+        player2.stop()
+        if not player2.hands_empty:
+          player2.holded_object.movement_key_pressed = False
+          player2.holded_object.stop()
+      elif comm == "w":
+        player2.jump(jump_height)
+      elif comm == "f":
+        player2.try_pickup() if player2.hands_empty else player2.drop_holded()
+      elif comm == "q":
+        end = True
   
     active_sprites.update()
     current_level.update()
@@ -178,11 +205,6 @@ def main():
       current_level.shift_world(diff)
          
     
-    # Check for player still alive
-    # if dangers.collision(player.rect):
-      #print("Game lost!")
-      #end = True
-  
     # Goal reached
     if player.on_goal() and player2.on_goal():
       if current_level_number < len(levels)-1:
@@ -205,6 +227,8 @@ def main():
     
     # Update display
     pygame.display.update()
+
+  cs.send('q')
 
   # Kill the client socket.
   cs.shutdown(socket.SHUT_RDWR)
