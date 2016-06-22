@@ -4,6 +4,7 @@ from pygame.locals import *
 
 from configuration import *
 import Singleplayer
+import Multiplayer
 
 # Initialise pygame
 def initialise():
