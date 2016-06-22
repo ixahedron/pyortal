@@ -9,12 +9,13 @@ import pygame
 
 class Level():
 
-  def __init__(self, player):
+  def __init__(self, player, player2 = None):
     self.platforms = pygame.sprite.Group()
     self.cubes = pygame.sprite.Group()
     self.buttons = pygame.sprite.Group()
     self.doors = pygame.sprite.Group()
     self.player = player
+    self.player2 = player2
     self.portal_blue = pygame.sprite.GroupSingle()
     self.portal_orange = pygame.sprite.GroupSingle()
     self.exit = pygame.sprite.GroupSingle()
@@ -134,8 +135,8 @@ class Level():
       
 class Level_01(Level):
 
-  def __init__(self, player):
-    Level.__init__(self, player)
+  def __init__(self, player, player2 = None):
+    Level.__init__(self, player, player2)
 
     self.background = pygame.transform.scale(pygame.image.load(bg_image_01), window_size).convert()
     

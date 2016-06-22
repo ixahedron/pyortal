@@ -9,28 +9,47 @@ from Level import *
 
 # Initialise mixer
 
-def init_network():
-  # Server
+# Init server
+def init_server():
+  
+  # Create a TCP socket.
+  ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
+  # Flush on every send.
+  ss.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+  ss.settimeout(15)
+  
+  # We will accept connections from all IPs on port 10101
+  p = int(input())
+  ss.bind(('0.0.0.0', p))
+  # We will accept all connections with zero backlog.
+  ss.listen(0)
   
   # This blocks until we accept a client connection, `cs` is the client socket.
   # Probably needs a separate thread?
   cs, client_addr = ss.accept()
   # Not block on read if nothing has been sent by the client, fail with exception.
   cs.setblocking(False)
-  # Send smth. to the client.
-  cs.send('c')
-  # Try reading a char from the client, continue if nothing sent.
-  try:
-    cs.recv(1)
-  except socket.error:
-    pass
-  # Kill the client connection.
-  cs.shutdown(socket.SHUT_RDWR)
+
+  return (ss, cs)
+
+# Init client
+def init_client():
   
-  # Connect to the server on `localhost:10101`.
-  cs.connect(('127.0.0.1', 10101))
+  # Create a TCP socket.
+  cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
+  # Flush on every send.
+  cs.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+  
+  p = int(input())
+  # Connect to the server on the specified host and port.
+  cs.connect((mp_host, p))
   # Not block on read if nothing has been sent by the server, fail with exception.
   cs.setblocking(False)
+
+  return cs
+
+def init_network():
+  
   # Send smth. to the server.
   cs.send('c')
   # Try reading a char from the server, continue if nothing sent.
@@ -45,45 +64,40 @@ def init_network():
 def main():
   screen = pygame.display.get_surface()
   clock = pygame.time.Clock()
+  
+  order = int(input())
 
-  # Init server
-  # Create a TCP socket.
-  ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
-  # Flush on every send.
-  ss.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-  # We will accept connections from all IPs on port 10101
-  ss.bind(('0.0.0.0', PORT))
-  # We will accept all connections with zero backlog.
-  ss.listen(0)
-  
-  # Init client
-  # Create a TCP socket.
-  cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
-  # Flush on every send.
-  cs.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-  
+  if order == 1:
+    (ss, scs) = init_server()
+    cs = init_client()
+  else:
+    cs = init_client()
+    (ss, scs) = init_server()
+
   #Initialise player
   player = Player()
-  player.rect.x = player_start_x
+  player.rect.x = player_start_x + (order % 2) * 100
   player.rect.y = player_start_y
   
   player2 = Player()
-  player2.rect.x = player_start_x + 100
+  player2.rect.x = player_start_x + ((order + 1) % 2) * 100
   player2.rect.y = player_start_y
-  
+
+
   # Initialise levels
   levels = []
-  levels.append(Level_01(player))
+  levels.append(Level_01(player, player2))
   
   current_level_number = 0 # start_with_level_number
   current_level = levels[current_level_number]
   
   player.level = current_level
+  player2.level = current_level
   
   # Initialise variables
   active_sprites = pygame.sprite.Group()
   active_sprites.add(player)
-  # active_sprites.add(player2)
+  active_sprites.add(player2)
   
   end = False
   
@@ -170,12 +184,14 @@ def main():
       #end = True
   
     # Goal reached
-    if player.on_goal():
+    if player.on_goal() and player2.on_goal():
       if current_level_number < len(levels)-1:
-        player.rect.x = start_left_shift
+        player.rect.x = start_left_shift + (order % 2) * 100
+        player2.rect.x = start_left_shift + ((order + 1) % 2) * 100
         current_level_number += 1
         current_level = levels[current_level_number]
         player.level = current_level
+        player2.level = current_level
       else:
         print("Game won!")
         end = True
@@ -190,6 +206,12 @@ def main():
     # Update display
     pygame.display.update()
 
+  # Kill the client socket.
+  cs.shutdown(socket.SHUT_RDWR)
+  
+  # Kill the client connection.
+  scs.shutdown(socket.SHUT_RDWR)
+  
   # Kill the server socket.
   ss.shutdown(socket.SHUT_RDWR)
   
