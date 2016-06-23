@@ -93,13 +93,13 @@ def main():
     # Check for events
     for event in pygame.event.get():
       if event.type == QUIT:
-        cs.send('q')
+        cs.send(b'q')
         end = True
   
     # Check for keypresses
       if event.type == KEYDOWN:
         if event.key == K_LEFT or event.key == K_a:
-          cs.send('a')
+          cs.send(b'a')
           player.movement_key_pressed = True
           player.set_in_motion(-movement_speed)
           if not player.hands_empty:
@@ -107,7 +107,7 @@ def main():
             player.holded_object.set_in_motion(-movement_speed)
         
         if event.key == K_RIGHT or event.key == K_d:
-          cs.send('d')
+          cs.send(b'd')
           player.movement_key_pressed = True
           player.set_in_motion(movement_speed)
           if not player.hands_empty:
@@ -115,22 +115,22 @@ def main():
             player.holded_object.set_in_motion(movement_speed)
         
         if event.key == K_UP or event.key == K_SPACE or event.key == K_w:
-          cs.send('w')
+          cs.send(b'w')
           player.jump(jump_height)
       
         if event.key == K_ESCAPE or event.key == K_q:
-          cs.send('q')
+          cs.send(b'q')
           end = True
         
         if (event.key == K_f):
-          cs.send('f')
+          cs.send(b'f')
           player.try_pickup() if player.hands_empty else player.drop_holded()
               
       if event.type == KEYUP:
 
         if (((event.key == K_LEFT or event.key == K_a) and player.speed_x < 0) or
             ((event.key == K_RIGHT or event.key == K_d) and player.speed_x > 0)):
-          cs.send('u')
+          cs.send(b'u')
           player.movement_key_pressed = False
           player.stop()
           if not player.hands_empty:
@@ -142,9 +142,16 @@ def main():
   
       if event.type == MOUSEBUTTONUP:
         if event.button == 1:
-          current_level.open_portal(pygame.mouse.get_pos(), True)
-        if event.button == 3:
-          current_level.open_portal(pygame.mouse.get_pos(), False)
+          (x, y) = pygame.mouse.get_pos()
+          
+          bx = str(x).zfill(4).encode('utf-8')
+          by = str(y).zfill(4).encode('utf-8')
+
+          cs.send(b'p')
+          cs.send(bx)
+          cs.send(by)
+          
+          current_level.open_portal((x, y), order % 2 == 1)
   
     try_receiving = True
     commands = []
@@ -156,6 +163,14 @@ def main():
           try_receiving = False
           end = True
           continue
+        if received == "p":
+          try:
+            x = int(scs.recv(4))
+            y = int(scs.recv(4))
+            current_level.open_portal((x, y), order % 2 == 0)
+          except:
+            continue
+
         commands.append(received)
       except socket.error:
         try_receiving = False
@@ -190,7 +205,7 @@ def main():
     current_level.update()
   
     object_start_shift = player if player.hands_empty else player.holded_object
-    if object_start_shift.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width : # so that the world doesn't shift if exit is in sight
+    if object_start_shift.rect.right >= start_right_shift and current_level.exit.sprite.rect.right > screen_x : # so that the world doesn't shift if exit is in sight
       diff = start_right_shift - object_start_shift.rect.right
       object_start_shift.rect.right = start_right_shift
       if not player.hands_empty:
@@ -231,7 +246,10 @@ def main():
   cs.send('q')
 
   # Kill the client socket.
-  cs.shutdown(socket.SHUT_RDWR)
+  try:
+    cs.shutdown(socket.SHUT_RDWR)
+  except:
+    pass
   
   # Kill the client connection.
   scs.shutdown(socket.SHUT_RDWR)
