@@ -8,6 +8,20 @@ from Level import *
 
 # Initialise mixer
 
+# Initialise pygame
+def initialise():
+  pygame.init()
+  
+  if not pygame.display.get_init():
+    pygame.display.init()
+
+  if not pygame.font.get_init():
+    pygame.font.init()
+
+  window = pygame.display.set_mode(window_size)
+
+  pygame.display.set_caption(game_title)
+
 def main():
   screen = pygame.display.get_surface()
   clock = pygame.time.Clock()
@@ -94,7 +108,7 @@ def main():
     current_level.update()
   
     object_start_shift = player if player.hands_empty else player.holded_object
-    if object_start_shift.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width : # so that the world doesn't shift if exit is in sight
+    if object_start_shift.rect.right >= start_right_shift and current_level.exit.sprite.rect.right > screen_x : # so that the world doesn't shift if exit is in sight
       diff = start_right_shift - object_start_shift.rect.right
       object_start_shift.rect.right = start_right_shift
       if not player.hands_empty:
@@ -135,3 +149,7 @@ def main():
     # Update display
     pygame.display.update()
   
+
+if __name__ == "__main__":
+  initialise()
+  main()

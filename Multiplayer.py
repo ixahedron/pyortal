@@ -205,7 +205,7 @@ def main():
     current_level.update()
   
     object_start_shift = player if player.hands_empty else player.holded_object
-    if object_start_shift.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width : # so that the world doesn't shift if exit is in sight
+    if object_start_shift.rect.right >= start_right_shift and current_level.exit.sprite.rect.right > screen_x : # so that the world doesn't shift if exit is in sight
       diff = start_right_shift - object_start_shift.rect.right
       object_start_shift.rect.right = start_right_shift
       if not player.hands_empty:
