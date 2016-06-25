@@ -4,10 +4,20 @@ import pygame
 
 class Platform(pygame.sprite.Sprite):
 
-  def __init__(self, width, height):
+  def __init__(self, width, height, image_to_use = platform_image):
     pygame.sprite.Sprite.__init__(self)
 
-    self.image = pygame.transform.scale(pygame.image.load(platform_image), (width, height))
+    self.image = pygame.image.load(image_to_use).convert()
+    self.rect = self.image.get_rect()
+
+    if width < self.rect.width:
+      self.image = pygame.transform.scale(self.image, (width, height))
+    else:
+      self.b = 0
+      self.image = pygame.Surface([width, height])
+      while self.b < width:
+        self.image.blit(pygame.image.load(image_to_use).convert(), (self.b, 0))
+        self.b += self.rect.width
 
     self.rect = self.image.get_rect()
 
@@ -59,3 +69,9 @@ class Platform(pygame.sprite.Sprite):
       elif ip[0] == x+w:
         return RIGHT
     return None
+
+class NonPortalPlatform(Platform):
+  def __init__(self, width, height):
+    Platform.__init__(self, width, height, black_platform_image)
+
+    self.portal_supporting = False
