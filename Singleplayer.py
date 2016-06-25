@@ -5,25 +5,24 @@ from pygame.locals import *
 from configuration import *
 from Player import *
 from Level import *
-from Menu import *
 
 # Initialise mixer
 
 # Initialise pygame
 def initialise():
   pygame.init()
+  
+  if not pygame.display.get_init():
+    pygame.display.init()
+
+  if not pygame.font.get_init():
+    pygame.font.init()
 
   window = pygame.display.set_mode(window_size)
 
   pygame.display.set_caption(game_title)
 
-def menu():
-  screen = pygame.display.get_surface()
-  menu = Menu(("Start", "Exit"))
-  menu.draw(screen)
-  return menu.controls()
-
-def main(start_with_level_number):
+def main():
   screen = pygame.display.get_surface()
   clock = pygame.time.Clock()
 
@@ -36,7 +35,7 @@ def main(start_with_level_number):
   levels = []
   levels.append(Level_01(player))
   
-  current_level_number = start_with_level_number
+  current_level_number = 0 # start_with_level_number
   current_level = levels[current_level_number]
   
   player.level = current_level
@@ -109,7 +108,7 @@ def main(start_with_level_number):
     current_level.update()
   
     object_start_shift = player if player.hands_empty else player.holded_object
-    if object_start_shift.rect.right >= start_right_shift and current_level.exit.sprite.rect.x > screen_x - exit_width : # so that the world doesn't shift if exit is in sight
+    if object_start_shift.rect.right >= start_right_shift and current_level.exit.sprite.rect.right > screen_x : # so that the world doesn't shift if exit is in sight
       diff = start_right_shift - object_start_shift.rect.right
       object_start_shift.rect.right = start_right_shift
       if not player.hands_empty:
@@ -153,10 +152,4 @@ def main(start_with_level_number):
 
 if __name__ == "__main__":
   initialise()
-  if use_menu:
-    level_no = menu()
-    main(level_no)
-  else:
-    main(0)
-  pygame.display.quit()
-  sys.exit()
+  main()

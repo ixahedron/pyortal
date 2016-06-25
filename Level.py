@@ -9,12 +9,13 @@ import pygame
 
 class Level():
 
-  def __init__(self, player):
+  def __init__(self, player, player2 = None):
     self.platforms = pygame.sprite.Group()
     self.cubes = pygame.sprite.Group()
     self.buttons = pygame.sprite.Group()
     self.doors = pygame.sprite.Group()
     self.player = player
+    self.player2 = player2
     self.portal_blue = pygame.sprite.GroupSingle()
     self.portal_orange = pygame.sprite.GroupSingle()
     self.exit = pygame.sprite.GroupSingle()
@@ -72,6 +73,9 @@ class Level():
 
     self.world_shift += shift_x
 
+    if self.player2 is not None:
+      self.player2.rect.x += shift_x
+
     for platform in self.platforms:
       platform.rect.x += shift_x
 
@@ -93,8 +97,9 @@ class Level():
     if self.exit.sprite is not None:
       self.exit.sprite.rect.x += shift_x
 
-  def open_portal(self, click, is_blue):
-    portal_gun_point = (self.player.rect.right, self.player.rect.centery) if self.player.direction is RIGHT else (self.player.rect.left, self.player.rect.centery)
+  def open_portal(self, click, is_blue, use_second_player = False):
+    player = self.player2 if use_second_player else self.player
+    portal_gun_point = (player.rect.right, player.rect.centery) if player.direction is RIGHT else (player.rect.left, player.rect.centery)
     
     # The logic in the key of sorted() function below is off a bit. Consider finding a better condition.
     platforms_in_the_way = sorted([p for p in self.platforms if p.portal_supporting and p.intersection(portal_gun_point, click) is not None], key = lambda p: abs(p.intersection_point[1] - portal_gun_point[1]))
@@ -134,8 +139,8 @@ class Level():
       
 class Level_01(Level):
 
-  def __init__(self, player):
-    Level.__init__(self, player)
+  def __init__(self, player, player2 = None):
+    Level.__init__(self, player, player2)
 
     self.background = pygame.transform.scale(pygame.image.load(bg_image_01), window_size).convert()
     
@@ -177,11 +182,11 @@ class Level_01(Level):
 
     buttons = [
                (100, 500),
-               (500, 280)
+       #        (500, 280)
                ]
     doors = [
              (200, 500),
-             (1570, 0.50 * screen_y)            
+        #     (1570, 0.50 * screen_y)            
             ]
 
     for (i, button) in enumerate(buttons):

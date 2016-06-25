@@ -77,6 +77,8 @@ class Player(MoveableObject):
       self.hands_empty = False
       self.holded_object = cubes_nearby[0]
       self.holded_object.holded = True
+      self.holded_object.holded_by = self
+      
       if self.holded_object.direction is not self.direction:
         self.holded_object.flip()
       self.holded_object.rect.top = self.rect.top
@@ -84,6 +86,7 @@ class Player(MoveableObject):
 
   def drop_holded(self):
     self.holded_object.holded = False
+    self.holded_object.holded_by = None
     self.holded_object.movement_key_pressed = False
     self.hands_empty = True
     self.holded_object = None
