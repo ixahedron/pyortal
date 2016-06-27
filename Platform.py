@@ -7,7 +7,18 @@ class Platform(pygame.sprite.Sprite):
   def __init__(self, width, height):
     pygame.sprite.Sprite.__init__(self)
 
-    self.image = pygame.transform.scale(pygame.image.load(platform_image), (width, height))
+    self.image = pygame.image.load(platform_image).convert()
+    self.rect = self.image.get_rect()
+
+    if width < self.rect.width:
+      self.image = pygame.transform.scale(self.image, (width, height))
+    else:
+      self.b = 0
+      self.image = pygame.Surface([width, height])
+      while self.b < width:
+        self.image.blit(pygame.image.load(platform_image).convert(), (self.b, 0))
+        self.b += self.rect.width
+
 
     self.rect = self.image.get_rect()
 

@@ -144,12 +144,12 @@ def main():
         if event.button == 1:
           (x, y) = pygame.mouse.get_pos()
           
-          bx = str(x).zfill(4).encode('utf-8')
-          by = str(y).zfill(4).encode('utf-8')
+          bdx = str(x - player.rect.x).zfill(4).encode('utf-8')
+          bdy = str(y - player.rect.y).zfill(4).encode('utf-8')
 
           cs.send(b'p')
-          cs.send(bx)
-          cs.send(by)
+          cs.send(bdx)
+          cs.send(bdy)
           
           current_level.open_portal((x, y), order % 2 == 1)
   
@@ -165,9 +165,9 @@ def main():
           continue
         if received == "p":
           try:
-            x = int(scs.recv(4))
-            y = int(scs.recv(4))
-            current_level.open_portal((x, y), order % 2 == 0)
+            dx = int(scs.recv(4))
+            dy = int(scs.recv(4))
+            current_level.open_portal((player2.rect.x + dx, player2.rect.y + dy), order % 2 == 0, True)
           except:
             continue
 

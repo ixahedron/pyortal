@@ -97,8 +97,9 @@ class Level():
     if self.exit.sprite is not None:
       self.exit.sprite.rect.x += shift_x
 
-  def open_portal(self, click, is_blue):
-    portal_gun_point = (self.player.rect.right, self.player.rect.centery) if self.player.direction is RIGHT else (self.player.rect.left, self.player.rect.centery)
+  def open_portal(self, click, is_blue, use_second_player = False):
+    player = self.player2 if use_second_player else self.player
+    portal_gun_point = (player.rect.right, player.rect.centery) if player.direction is RIGHT else (player.rect.left, player.rect.centery)
     
     # The logic in the key of sorted() function below is off a bit. Consider finding a better condition.
     platforms_in_the_way = sorted([p for p in self.platforms if p.portal_supporting and p.intersection(portal_gun_point, click) is not None], key = lambda p: abs(p.intersection_point[1] - portal_gun_point[1]))
