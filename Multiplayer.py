@@ -30,10 +30,10 @@ def init_server(port = None):
   # Not block on read if nothing has been sent by the client, fail with exception.
   cs.setblocking(False)
 
-  return (ss, cs)
+  return (ss, client_addr, cs)
 
 # Init client
-def init_client(port = None):
+def init_client(port = None, host = None):
   
   # Create a TCP socket.
   cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
@@ -41,14 +41,16 @@ def init_client(port = None):
   cs.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
   
   port = port if port is not None else int(input())
+  host = host if host is not None else mp_host
   # Connect to the server on the specified host and port.
-  cs.connect((mp_host, port))
+  cs.connect((host, port))
   # Not block on read if nothing has been sent by the server, fail with exception.
   cs.setblocking(False)
 
   return cs
 
 
+# def main(host, order):
 def main():
   screen = pygame.display.get_surface()
   clock = pygame.time.Clock()
@@ -56,11 +58,11 @@ def main():
   order = int(input())
 
   if order == 1:
-    (ss, scs) = init_server(mp_port1)
-    cs = init_client(mp_port2)
+    (ss, sca, scs) = init_server(mp_port1)
+    cs = init_client(mp_port2, sca[0])
   else:
     cs = init_client(mp_port1)
-    (ss, scs) = init_server(mp_port2)
+    (ss, sca, scs) = init_server(mp_port2)
 
   #Initialise player
   player = Player()

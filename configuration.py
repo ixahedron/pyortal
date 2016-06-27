@@ -3,8 +3,8 @@ text_size_menu = 32
 logo_menu = "res/logo_resized.png"
 
 mp_host = '127.0.0.1'
-mp_port1 = 10107
-mp_port2 = 10108
+mp_port1 = 10103
+mp_port2 = 10104
 
 game_title = 'Portal 2d wannabe'
 

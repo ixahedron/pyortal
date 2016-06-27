@@ -73,7 +73,19 @@ class Menu():
               if option.text == "Singleplayer" and option.rect.collidepoint(pygame.mouse.get_pos()):
                 return Singleplayer.main
               elif option.text == "Multiplayer" and option.rect.collidepoint(pygame.mouse.get_pos()):
+                screen = pygame.display.get_surface()
+                self = Menu(("Create a game", "Connect to a game", "Return"))
+                self.draw(screen)
+                return self.controls()
+              elif option.text == "Create a game" and option.rect.collidepoint(pygame.mouse.get_pos()):
                 return Multiplayer.main
+              elif option.text == "Connect to a game" and option.rect.collidepoint(pygame.mouse.get_pos()):
+                return Multiplayer.main
+              elif option.text == "Return" and option.rect.collidepoint(pygame.mouse.get_pos()):
+                screen = pygame.display.get_surface()
+                self = Menu(("Singleplayer", "Multiplayer", "Exit"))
+                self.draw(screen)
+                return self.controls()
               elif option.text == "Exit" and option.rect.collidepoint(pygame.mouse.get_pos()):
                 not_chosen = False
         pygame.display.update()
@@ -109,7 +121,6 @@ if __name__ == "__main__":
   if use_menu:
     mode_main = menu()
     mode_main()
-    # Multiplayer.main()
   else:
     Singleplayer.main()
   pygame.display.quit()
