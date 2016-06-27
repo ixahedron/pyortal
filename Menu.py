@@ -22,21 +22,20 @@ def initialise():
 
 def menu():
   screen = pygame.display.get_surface()
-  menu = Menu(("Multiplayer", "Singleplayer", "Exit"))
+  options_dict = {1: "Multiplayer", 2: "Singleplayer", 0: "Exit"}
+  menu = Menu(options_dict)
   menu.draw(screen)
   return menu.controls()
 
 class Menu():
 
-  def __init__(self, options_list):
+  def __init__(self, options_dict):
     self.options = pygame.sprite.Group()
 
-    for option in options_list:
-      self.options.add(Option(option))
-
-    #for (i, option) in enumerate(reversed(list(self.options))):
-    for (i, option) in enumerate(self.options):
-      option.rect.y = screen_y - 50 - (i+1) * 100
+    for (offset, option) in options_dict.items():
+      opt = Option(option)
+      opt.rect.y = screen_y - 50 - (offset+1) * 100
+      self.options.add(opt)
 
     # self.background = pygame.transform.scale(pygame.image.load(menu_image), window_size).convert() # perhaps if I find the image
     self.background = pygame.Surface(window_size)
@@ -74,7 +73,8 @@ class Menu():
                 return Singleplayer.main
               elif option.text == "Multiplayer" and option.rect.collidepoint(pygame.mouse.get_pos()):
                 screen = pygame.display.get_surface()
-                self = Menu(("Create a game", "Connect to a game", "Return"))
+                options_dict = {2: "Create a game", 1: "Connect to a game", 0: "Return"}
+                self = Menu(options_dict)
                 self.draw(screen)
                 return self.controls()
               elif option.text == "Create a game" and option.rect.collidepoint(pygame.mouse.get_pos()):
@@ -83,7 +83,8 @@ class Menu():
                 return Multiplayer.main
               elif option.text == "Return" and option.rect.collidepoint(pygame.mouse.get_pos()):
                 screen = pygame.display.get_surface()
-                self = Menu(("Singleplayer", "Multiplayer", "Exit"))
+                options_dict = {1: "Multiplayer", 2: "Singleplayer", 0: "Exit"}
+                self = Menu(options_dict)
                 self.draw(screen)
                 return self.controls()
               elif option.text == "Exit" and option.rect.collidepoint(pygame.mouse.get_pos()):
