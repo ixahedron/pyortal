@@ -31,6 +31,10 @@ maximum_vertical_velocity = 50
 movement_speed = 5
 friction = 0.2
 
+#run_frames loading
+run_frames_l = []
+run_frames_r = []
+
 player_image = "res/ninjacat_2_fix.png"
 player_width = 40
 player_height = 60
