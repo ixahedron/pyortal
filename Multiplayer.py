@@ -8,6 +8,10 @@ from Player import *
 from Level import *
 
 # Initialise mixer
+try:
+    input = raw_input
+except NameError:
+    pass
 
 # Init server
 def init_server(port = None):
@@ -41,7 +45,7 @@ def init_client(port = None, host = None):
   cs.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
   
   port = port if port is not None else int(input())
-  host = host if host is not None else mp_host
+  host = host if host is not None else input()
   # Connect to the server on the specified host and port.
   cs.connect((host, port))
   # Not block on read if nothing has been sent by the server, fail with exception.
