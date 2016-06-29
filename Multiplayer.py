@@ -16,7 +16,7 @@ def init_server(port = None):
   ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
   # Flush on every send.
   ss.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-  ss.settimeout(15)
+  ss.settimeout(20)
   
   # We will accept connections from all IPs on port 10101
   port = port if port is not None else int(input())
@@ -41,7 +41,7 @@ def init_client(port = None, host = None):
   cs.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
   
   port = port if port is not None else int(input())
-  host = host if host is not None else mp_host
+  host = host if host is not None else input()
   # Connect to the server on the specified host and port.
   cs.connect((host, port))
   # Not block on read if nothing has been sent by the server, fail with exception.
@@ -160,7 +160,7 @@ def main():
     while try_receiving:
       # Try reading a char from the server, continue if nothing sent.
       try:
-        received = scs.recv(1)
+        received = scs.recv(1).decode('utf-8')
         if received == "q":
           try_receiving = False
           end = True
@@ -245,7 +245,7 @@ def main():
     # Update display
     pygame.display.update()
 
-  cs.send('q')
+  cs.send(b'q')
 
   # Kill the client socket.
   try:
