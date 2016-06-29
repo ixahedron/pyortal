@@ -78,9 +78,9 @@ class Menu():
                 self.draw(screen)
                 return self.controls()
               elif option.text == "Create a game" and option.rect.collidepoint(pygame.mouse.get_pos()):
-                return Multiplayer.main
+                return lambda: Multiplayer.main(1)
               elif option.text == "Connect to a game" and option.rect.collidepoint(pygame.mouse.get_pos()):
-                return Multiplayer.main
+                return lambda: Multiplayer.main(2)
               elif option.text == "Return" and option.rect.collidepoint(pygame.mouse.get_pos()):
                 screen = pygame.display.get_surface()
                 options_dict = {1: "Multiplayer", 2: "Singleplayer", 0: "Exit"}

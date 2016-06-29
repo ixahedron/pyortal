@@ -41,7 +41,7 @@ def init_client(port = None, host = None):
   cs.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
   
   port = port if port is not None else int(input())
-  host = host if host is not None else input()
+  host = host if host is not None else mp_host
   # Connect to the server on the specified host and port.
   cs.connect((host, port))
   # Not block on read if nothing has been sent by the server, fail with exception.
@@ -51,13 +51,11 @@ def init_client(port = None, host = None):
 
 
 # def main(host, order):
-def main():
+def main(order):
   screen = pygame.display.get_surface()
   clock = pygame.time.Clock()
   
-  order = int(input())
-
-  if order == 1:
+  if order % 2 == 1:
     (ss, sca, scs) = init_server(mp_port1)
     cs = init_client(mp_port2, sca[0])
   else:
