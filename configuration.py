@@ -38,10 +38,14 @@ movement_speed = 5
 friction = 0.2
 
 #run_frames loading
-run_frames_l = []
-run_frames_r = []
+run_frames = ["res/Run__000.png","res/Run__001.png","res/Run__002.png","res/Run__003.png","res/Run__004.png",
+              "res/Run__005.png","res/Run__006.png","res/Run__007.png","res/Run__008.png","res/Run__009.png"]
+jump_frames = ["res/Jump__000.png","res/Jump__001.png","res/Jump__002.png","res/Jump__003.png","res/Jump__004.png",
+               "res/Jump__005.png","res/Jump__006.png","res/Jump__007.png","res/Jump__008.png","res/Jump__009.png"]
+idle_frames = ["res/Idle__001.png","res/Idle__002.png","res/Idle__003.png","res/Idle__004.png",
+               "res/Idle__005.png","res/Idle__006.png","res/Idle__007.png","res/Idle__008.png","res/Idle__009.png"]
 
-player_image = "res/ninjacat_2_fix.png"
+player_image = "res/Idle__001.png"
 player_width = 40
 player_height = 60
 
