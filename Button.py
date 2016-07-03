@@ -34,6 +34,7 @@ class Button(pygame.sprite.Sprite):
 
   def press(self):
     self.pressed = True
+    button_pressed =  "res/Button_Press.wav"
 
     x = self.rect.x
     b = self.rect.bottom
@@ -41,6 +42,8 @@ class Button(pygame.sprite.Sprite):
     self.rect = self.image.get_rect()
     self.rect.x = x
     self.rect.bottom = b
+    btn_snd = pygame.mixer.Sound(button_pressed)
+    btn_snd.play()
 
     self.door.open()
     

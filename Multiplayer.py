@@ -8,6 +8,10 @@ from Player import *
 from Level import *
 
 # Initialise mixer
+try:
+    input = raw_input
+except NameError:
+    pass
 
 # Init server
 def init_server(port = None):
@@ -16,7 +20,7 @@ def init_server(port = None):
   ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
   # Flush on every send.
   ss.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-  ss.settimeout(15)
+  ss.settimeout(20)
   
   # We will accept connections from all IPs on port 10101
   port = port if port is not None else int(input())
@@ -30,37 +34,36 @@ def init_server(port = None):
   # Not block on read if nothing has been sent by the client, fail with exception.
   cs.setblocking(False)
 
-  return (ss, cs)
+  return (ss, client_addr[0], cs)
 
 # Init client
-def init_client(port = None):
+def init_client(host, port = None):
   
   # Create a TCP socket.
   cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
   # Flush on every send.
   cs.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
   
-  port = port if port is not None else int(input())
+  port = port if port is not None else 31337
+  host = host if len(host) > 0 else mp_host
   # Connect to the server on the specified host and port.
-  cs.connect((mp_host, port))
+  cs.connect((host, port))
   # Not block on read if nothing has been sent by the server, fail with exception.
   cs.setblocking(False)
 
   return cs
 
 
-def main():
+def main(order, host = None):
   screen = pygame.display.get_surface()
   clock = pygame.time.Clock()
   
-  order = int(input())
-
-  if order == 1:
-    (ss, scs) = init_server(mp_port1)
-    cs = init_client(mp_port2)
+  if order % 2 == 1:
+    (ss, sca, scs) = init_server(mp_port1)
+    cs = init_client(sca, mp_port2)
   else:
-    cs = init_client(mp_port1)
-    (ss, scs) = init_server(mp_port2)
+    cs = init_client(host, mp_port1)
+    (ss, sca, scs) = init_server(mp_port2)
 
   #Initialise player
   player = Player()
@@ -158,7 +161,7 @@ def main():
     while try_receiving:
       # Try reading a char from the server, continue if nothing sent.
       try:
-        received = scs.recv(1)
+        received = scs.recv(1).decode('utf-8')
         if received == "q":
           try_receiving = False
           end = True
@@ -243,7 +246,7 @@ def main():
     # Update display
     pygame.display.update()
 
-  cs.send('q')
+  cs.send(b'q')
 
   # Kill the client socket.
   try:

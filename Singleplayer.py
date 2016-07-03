@@ -1,12 +1,19 @@
 import pygame
 import sys
 from pygame.locals import *
+import pygame.mixer
 
 from configuration import *
 from Player import *
 from Level import *
 
 # Initialise mixer
+
+# sounds
+background_sound = "res/manaosnesting1.wav"
+laser_door = "res/laser_door.wav"
+gamewon = "res/game_win.wav"
+
 
 # Initialise pygame
 def initialise():
@@ -25,6 +32,9 @@ def initialise():
 def main():
   screen = pygame.display.get_surface()
   clock = pygame.time.Clock()
+  sound = pygame.mixer.Sound(background_sound)
+  sound.play()
+  
 
   #Initialise player
   player = Player()
@@ -136,6 +146,9 @@ def main():
         current_level = levels[current_level_number]
         player.level = current_level
       else:
+        sound.stop()
+        sound_gamewon = pygame.mixer.Sound(gamewon)
+        sound_gamewon.play()
         print("Game won!")
         end = True
     

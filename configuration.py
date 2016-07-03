@@ -3,8 +3,8 @@ text_size_menu = 32
 logo_menu = "res/logo_resized.png"
 
 mp_host = '127.0.0.1'
-mp_port1 = 10107
-mp_port2 = 10108
+mp_port1 = 10103
+mp_port2 = 10104
 
 game_title = 'Portal 2d wannabe'
 
@@ -16,6 +16,12 @@ window_size = (screen_x, screen_y)
 
 start_right_shift = screen_x * 0.7
 start_left_shift = screen_x * 0.3
+
+screen_x_center = int(screen_x * 0.5)
+screen_y_center = int(screen_y * 0.6)
+
+input_field_w = text_size_menu * 10
+input_field_x_shift = int(input_field_w * 0.5)
 
 platform_colour = (205, 133, 63)
 
@@ -30,6 +36,10 @@ jump_height = -8.5
 maximum_vertical_velocity = 50
 movement_speed = 5
 friction = 0.2
+
+#run_frames loading
+run_frames_l = []
+run_frames_r = []
 
 player_image = "res/ninjacat_2_fix.png"
 player_width = 40
