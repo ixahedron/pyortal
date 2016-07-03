@@ -33,7 +33,7 @@ def main():
   screen = pygame.display.get_surface()
   clock = pygame.time.Clock()
   sound = pygame.mixer.Sound(background_sound)
-  sound.play()
+  sound.play(-1)
   
 
   #Initialise player
