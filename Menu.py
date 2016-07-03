@@ -1,6 +1,7 @@
 import sys
 import pygame
 from pygame.locals import *
+import Textfield
 
 from configuration import *
 import Singleplayer
@@ -21,11 +22,15 @@ def initialise():
   pygame.display.set_caption(game_title)
 
 def menu():
+  menu = change_menu_options({1: "Multiplayer", 2: "Singleplayer", 0: "Exit"})
+  return menu.controls()
+
+def change_menu_options(options_dict):
   screen = pygame.display.get_surface()
-  options_dict = {1: "Multiplayer", 2: "Singleplayer", 0: "Exit"}
   menu = Menu(options_dict)
   menu.draw(screen)
-  return menu.controls()
+  return menu
+
 
 class Menu():
 
@@ -72,20 +77,20 @@ class Menu():
               if option.text == "Singleplayer" and option.rect.collidepoint(pygame.mouse.get_pos()):
                 return Singleplayer.main
               elif option.text == "Multiplayer" and option.rect.collidepoint(pygame.mouse.get_pos()):
-                screen = pygame.display.get_surface()
-                options_dict = {2: "Create a game", 1: "Connect to a game", 0: "Return"}
-                self = Menu(options_dict)
-                self.draw(screen)
+                self = change_menu_options({2: "Create a game", 1: "Connect to a game", 0: "Return"})
                 return self.controls()
               elif option.text == "Create a game" and option.rect.collidepoint(pygame.mouse.get_pos()):
                 return lambda: Multiplayer.main(1)
               elif option.text == "Connect to a game" and option.rect.collidepoint(pygame.mouse.get_pos()):
-                return lambda: Multiplayer.main(2)
+                self = change_menu_options({2: "Enter the other player's IP:"})
+                host = Textfield.ask(mp_host)
+                if host is None:
+                  self = change_menu_options({2: "Create a game", 1: "Connect to a game", 0: "Return"})
+                  return self.controls()
+                else:
+                  return lambda: Multiplayer.main(2, host)
               elif option.text == "Return" and option.rect.collidepoint(pygame.mouse.get_pos()):
-                screen = pygame.display.get_surface()
-                options_dict = {1: "Multiplayer", 2: "Singleplayer", 0: "Exit"}
-                self = Menu(options_dict)
-                self.draw(screen)
+                self = change_menu_options({1: "Multiplayer", 2: "Singleplayer", 0: "Exit"})
                 return self.controls()
               elif option.text == "Exit" and option.rect.collidepoint(pygame.mouse.get_pos()):
                 not_chosen = False

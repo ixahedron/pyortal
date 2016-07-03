@@ -17,6 +17,12 @@ window_size = (screen_x, screen_y)
 start_right_shift = screen_x * 0.7
 start_left_shift = screen_x * 0.3
 
+screen_x_center = int(screen_x * 0.5)
+screen_y_center = int(screen_y * 0.6)
+
+input_field_w = text_size_menu * 10
+input_field_x_shift = int(input_field_w * 0.5)
+
 platform_colour = (205, 133, 63)
 
 BLACK = (0, 0, 0)
