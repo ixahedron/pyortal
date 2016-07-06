@@ -66,11 +66,11 @@ def main(order, host = None):
     (ss, sca, scs) = init_server(mp_port2)
 
   #Initialise player
-  player = Player()
+  player = Player(order % 2)
   player.rect.x = player_start_x + (order % 2) * 100
   player.rect.y = player_start_y
   
-  player2 = Player(2)
+  player2 = Player((order+1) % 2)
   player2.rect.x = player_start_x + ((order + 1) % 2) * 100
   player2.rect.y = player_start_y
 
