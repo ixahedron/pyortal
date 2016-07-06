@@ -75,7 +75,7 @@ class Menu():
           if event.button == 1:
             for option in self.options:
               if option.text == "Singleplayer" and option.rect.collidepoint(pygame.mouse.get_pos()):
-                return Singleplayer.main
+                return lambda: Singleplayer.backstory(backstory_text)
               elif option.text == "Multiplayer" and option.rect.collidepoint(pygame.mouse.get_pos()):
                 self = change_menu_options({2: "Create a game", 1: "Connect to a game", 0: "Return"})
                 return self.controls()
@@ -128,6 +128,6 @@ if __name__ == "__main__":
     mode_main = menu()
     mode_main()
   else:
-    Singleplayer.main()
+    Singleplayer.backstory()
   pygame.display.quit()
   sys.exit()

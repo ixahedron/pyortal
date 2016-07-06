@@ -8,6 +8,16 @@ mp_port2 = 10104
 
 game_title = 'Portal 2d wannabe'
 
+backstory_text = {
+             1 : "Ein Ninja bricht in ein Labor ein",
+             2 : "um eine Formel zu stehlen.",
+             3 : "Dabei findet er ein Portal-Gun!",
+             4 : "Mit diesem muss er zu der Formel gelangen.",
+             5 : "Doch dabei erwarten ihn keine Gegner",
+             6 : "in dem aufgegebenen Labor,",
+             7 : "sondern Puzzles."
+            }
+
 screen_x = 800
 screen_y = 600
 player_start_x = 50

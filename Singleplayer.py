@@ -6,6 +6,7 @@ import pygame.mixer
 from configuration import *
 from Player import *
 from Level import *
+import Menu
 
 # Initialise mixer
 
@@ -28,6 +29,41 @@ def initialise():
   window = pygame.display.set_mode(window_size)
 
   pygame.display.set_caption(game_title)
+
+def backstory(text):
+  screen = pygame.display.get_surface()
+  story = pygame.sprite.Group()
+  
+  for (offset, ln) in text.items():
+    line = Menu.Option(ln)
+    line.rect.y = 50 + (offset+1) * 50
+    story.add(line)
+    
+  # background = pygame.transform.scale(pygame.image.load(menu_image), window_size).convert() # perhaps if I find the image
+  background = pygame.Surface(window_size)
+  background.fill(BLACK)
+    
+  screen.blit(background, (0, 0))
+  story.draw(screen)
+
+  pygame.display.update()
+  not_chosen = True
+  while not_chosen:
+    for event in pygame.event.get():
+      if event.type == QUIT:
+        not_chosen = False
+
+      if event.type == KEYDOWN:
+        not_chosen = False
+        main()
+
+      if event.type == MOUSEBUTTONUP:
+        not_chosen = False
+        main()
+      
+      pygame.display.update()
+    pygame.time.wait(8)
+
 
 def main():
   screen = pygame.display.get_surface()
@@ -165,4 +201,4 @@ def main():
 
 if __name__ == "__main__":
   initialise()
-  main()
+  backstory(backstory_text)
