@@ -8,6 +8,12 @@ mp_port2 = 10108
 
 game_title = 'Portal 2d wannabe'
 
+backstory_text = {
+             1 : "Lorem ipsum dolor sit amet, consectetur",
+             2 : "adipiscing elit. Donec vel diam",
+             3 : "et nisi euismod porta. Curabitur vitae ligula"
+            }
+
 screen_x = 800
 screen_y = 600
 player_start_x = 50
