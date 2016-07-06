@@ -70,7 +70,7 @@ def main(order, host = None):
   player.rect.x = player_start_x + (order % 2) * 100
   player.rect.y = player_start_y
   
-  player2 = Player()
+  player2 = Player(2)
   player2.rect.x = player_start_x + ((order + 1) % 2) * 100
   player2.rect.y = player_start_y
 

@@ -21,6 +21,10 @@ class Portal_opened(Portal):
     else:
       image_used = portal_orange_image
 
+    portal_shot = "res/laser_blast.wav"
+    portal_snd = pygame.mixer.Sound(portal_shot)
+    portal_snd.play()
+
     self.image = pygame.transform.scale(pygame.image.load(image_used), (width, height))
     
     self.rect = self.image.get_rect()
