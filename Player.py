@@ -7,7 +7,7 @@ class Player(MoveableObject):
 
     self.idle_frames = idle_frames_1 if order == 1 else idle_frames_2
     self.run_frames = run_frames_1 if order == 1 else run_frames_2
-    self.jump_frames = jump_frames_l if order == 1 else jump_frames_2
+    self.jump_frames = jump_frames_1 if order == 1 else jump_frames_2
     
     MoveableObject.__init__(self)
 
