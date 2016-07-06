@@ -26,6 +26,47 @@ class Level():
     self.bg_1_x = -100
     self.bg_2_x = screen_x - 100
 
+  def init_platforms(self, level):
+    for platform in level:
+      block = Platform(platform[0], platform[1])
+
+      block.rect.x = platform[2]
+      block.rect.y = platform[3]
+
+      self.platforms.add(block)
+
+  def init_cubes(self, cubes):
+    for (i, cube) in enumerate(cubes):
+      block = Cube(i)
+
+      block.rect.x = cube[0]
+      block.rect.y = cube[1]
+
+      block.level = self
+
+      self.cubes.add(block)
+
+  def init_buttons(self, buttons, doors):
+    for (i, button) in enumerate(buttons):
+      block = Button()
+
+      block.rect.x = button[0]
+      block.rect.bottom = button[1]
+
+      door = Door()
+
+      door.rect.x = doors[i][0]
+      door.rect.bottom = doors[i][1]
+
+      door.button = block
+
+      block.door = door
+
+      block.level = self
+
+      self.doors.add(door)
+      self.buttons.add(block)
+
   def update(self):
     self.platforms.update()
     self.cubes.update()
@@ -137,6 +178,180 @@ class Level():
             self.portal_orange.sprite = portal
           
       
+class Level_M_01(Level):
+
+  def __init__(self, player, player2 = None):
+    Level.__init__(self, player, player2)
+
+    self.background = pygame.transform.scale(pygame.image.load(bg_image_01), window_size).convert()
+    
+    # every platform: width, height, x, y
+    
+    # Level 1
+##
+##    level = [
+##                  (600, 	10,	 	0,	 	0,		True),
+##                  (10,	800, 	0,	 	0, 		False),
+##                  (10, 	200, 	600, 	0, 		False),
+##                  (10, 	400, 	600, 	600,	False),
+##                  (600, 	10,		0,		1000,	False),
+##
+##                  (10, 	200,	1000,	0,		False),
+##                  (600,	10,		1000,	0,		False),
+##                  (10,	600,	1000,	400,	False),
+##                  (600, 	10, 	1000,	1000,	True),
+##                  (10,	1000,	1600,	0,		False),
+##                  (400,	200,	1000,	200,	True)      
+##          ]
+##
+##    # Level 2
+##
+##    level = [
+##                          
+##          ]
+##
+##    # Level 3
+##
+##    level = [
+##                          (1200,	10,		0,		0,		False),
+##                  (10,	200,	0,		0,		True),
+##                  (200,	10,		0,		200,	False),
+##                  (10,	300,	200,	200,	True),
+##                  (200,	10,		0,		500,	False),
+##                  (10,	400,	0,		500,	True),
+##                  (800,	10,		0,		700,	False),
+##                  (600,	100,	0,		900,	False),
+##                  (10,	300,	1000,	700,	False),
+##                  (10,	100,	990,	850,	True),
+##                  (10,	200,	1000,	500,	True),
+##                  (250,	100,	950,	400,	False),
+##                  (10,	400,	1200,	0,		False),
+##                  (400,	10,		800,	200, 	False)
+##          ]
+##
+##    # Level 4
+##
+##    level = [
+##                  (1400,	10,		0,		0,		False),
+##                  (10,	600,	1400,	0,		True),
+##                  (10,	1000,	0,		0,		False),
+##                  (500,	10,		0,		300,	False),
+##                  (800,	10,		0,		600,	False),
+##                  (200,	10,		300,	595,	True),
+##                  (400,	10,		0,		1000,	False)          
+##          ]
+##
+##    # Level 5
+##
+##    level = [
+##                  (200,	10,		100,	0,		False),
+##                  (10,	200,	0,		100,	True),
+##                  (400,	10,		100,	700,	True),
+##                  (400,	10,		900,	0,		True),
+##                  (400,	10,		800,	700,	False),
+##                  (300,	10,		1400,	200,	False)
+##          ]
+##
+##    # Level 6
+##
+##    level = [
+##                  (10,	200,	0,		0,		False),
+##                  (300,	10,		0,		0,		True),
+##                  (300,	10,		0,		500,	False),
+##                  (900,	10,		0,		800,	False),
+##                  (300,	300,	600,	300,	False)   
+##          ]
+##
+##    # MP Level 1
+##
+##    level = [
+##                  (500,	10,		0,		0,		True),
+##                  (1200,	10,		500,	0,		False),
+##                  (10,	400,	1700,	0,		True),
+##                  (200,	400,	1500,	400,	False),
+##                  (200,	10,		1300,	800,	False),
+##                  (200,	10,		1100,	800,	True),
+##                  (800,	10,		300,	800,	False),
+##                  (10,	200,	300,	400,	False),
+##
+##                  (200,	200,	300,	200,	False),
+##                  (200,	400,	700,	200,	False),
+##                  (200,	400,	1100,	200,	False),
+##                  (200,	200,	300,	600,	False),
+##
+##                  (200,	800,	0,		200,	False),
+##                  (2800,	10,		200,	1000,	False),
+##                  (1200,	10,		1700,	800,	False)
+##          ]
+##    # MP Level 2
+##
+    level = [
+              (2000, 	10, 	0,	0, 		False),
+              (500, 	10, 	400,	300, 		False),
+              (300, 	10, 	0,	300, 		False),
+              (20,      100,    500,    310,            False),
+              (20,      130,    800,    10,             False),
+              (20,      100,    1300,   310,            False),
+              (20,      130,    1300,    10,             False),
+              (600, 	10, 	1200,	300, 		False),
+              (2000, 	30, 	0,      570,	        False)    
+          ]
+
+    cubes = [
+            (600, 290),
+            (600, 550),
+            (1100, 550),
+            (1500, 550)
+            ]
+
+
+    buttons = [
+##               (500, 305),
+##               (800, 575),
+                (1000, 575),
+                (1400, 575)
+              ]
+    doors = [
+##               (500, 572),
+##               (800, 300),
+                (1300, 572),
+                (1300,300)
+            ]
+    
+##    # MP Level 3
+##
+##    level = [
+##                  (900,	200,	0,		0,		False),
+##                  (600,	10,		900,	0,		False),
+##                  (10,	200,	1500,	0,		True),
+##                  (100,	210,	1200,   200,	True),
+##                  (10,	400,	1500,	200,	False),
+##                  (600,	100,	1500,	600,	False),
+##                  (600,	100,	1500,	800,	False),
+##                  (200,	400,	1200,	900,	False),
+##                  (500,	200,	0,		1200,	False),
+##                  (10,	1200,	0,		400,	False),
+##                  (200,	10,		0,		400,	True),
+##                  (300,	10,		0,		600,	True),
+##                  (10,	200,	300,	400,	False),
+##                  (900,	10,		300,	400,	False)
+##        ]
+
+            
+
+    self.left_border = level[0][2]
+
+
+
+    self.init_platforms(level)
+    self.init_cubes(cubes)
+    self.init_buttons(buttons, doors)
+
+    self.exit.sprite = Exit()
+    self.exit.sprite.rect.x = 1600
+    self.exit.sprite.rect.y = 0.3 * screen_y
+
+
 class Level_01(Level):
 
   def __init__(self, player, player2 = None):
@@ -159,26 +374,8 @@ class Level_01(Level):
 
     self.left_border = level[0][2]
 
-    for platform in level:
-      block = Platform(platform[0], platform[1])
-
-      block.rect.x = platform[2]
-      block.rect.y = platform[3]
-
-      self.platforms.add(block)
-
     cubes = [(60, 450),
              (100, 510)]
-
-    for (i, cube) in enumerate(cubes):
-      block = Cube(i)
-
-      block.rect.x = cube[0]
-      block.rect.y = cube[1]
-
-      block.level = self
-
-      self.cubes.add(block)
 
     buttons = [
                (100, 500),
@@ -189,26 +386,10 @@ class Level_01(Level):
         #     (1570, 0.50 * screen_y)            
             ]
 
-    for (i, button) in enumerate(buttons):
-      block = Button()
-
-      block.rect.x = button[0]
-      block.rect.bottom = button[1]
-
-      door = Door()
-
-      door.rect.x = doors[i][0]
-      door.rect.bottom = doors[i][1]
-
-      door.button = block
-
-      block.door = door
-
-      block.level = self
-
-      self.doors.add(door)
-      self.buttons.add(block)
-
+    self.init_platforms(level)
+    self.init_cubes(cubes)
+    self.init_buttons(buttons, doors)
+    
     self.exit.sprite = Exit()
     self.exit.sprite.rect.x = 1600
     self.exit.sprite.rect.y = 0.3 * screen_y

@@ -60,7 +60,8 @@ player_height = 60
 bg_image_default = "res/back.png"
 bg_image_01 = "res/back_03.jpg"
 
-platform_image = "res/platform_1.jpg"
+platform_image = "res/platform_4.png"
+black_platform_image = "res/black_platform.jpg"
 
 cube_image = "res/cube_image.png"
 cube_edge = 30
