@@ -21,11 +21,11 @@ class Player(MoveableObject):
     
     #load the run frames into a list
     for image in self.idle_frames:
-      frame = pygame.transform.scale(pygame.image.load(image), (player_width, player_height))
+      frame = pygame.transform.scale(pygame.image.load(image), (player_width - 10, player_height))
       self.images_idle_r.append(frame)
     
     for image in self.idle_frames:
-      frame = pygame.transform.flip(pygame.transform.scale(pygame.image.load(image), (player_width, player_height) ), True, False)
+      frame = pygame.transform.flip(pygame.transform.scale(pygame.image.load(image), (player_width - 10, player_height) ), True, False)
       self.images_idle_l.append(frame)
 
     for image in self.run_frames:
