@@ -58,7 +58,7 @@ class Player(MoveableObject):
 
     pos = self.rect.x + self.level.world_shift
 
-    frame = int(pos // 5) % len(self.images_list)
+    frame = int(pos // 10) % len(self.images_list)
     self.image = self.images_list[frame]
     
     
