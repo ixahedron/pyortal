@@ -20,27 +20,27 @@ class Player(MoveableObject):
     self.images_jump_l = []
     
     #load the run frames into a list
-    for image in idle_frames:
+    for image in self.idle_frames:
       frame = pygame.transform.scale(pygame.image.load(image), (player_width, player_height))
       self.images_idle_r.append(frame)
     
-    for image in idle_frames:
+    for image in self.idle_frames:
       frame = pygame.transform.flip(pygame.transform.scale(pygame.image.load(image), (player_width, player_height) ), True, False)
       self.images_idle_l.append(frame)
 
-    for image in run_frames:
+    for image in self.run_frames:
       frame = pygame.transform.scale(pygame.image.load(image), (player_width, player_height))
       self.images_run_r.append(frame)
 
-    for image in run_frames:
+    for image in self.run_frames:
       frame = pygame.transform.flip(pygame.transform.scale(pygame.image.load(image), (player_width, player_height) ), True, False)
       self.images_run_l.append(frame)
 
-    for image in jump_frames:
+    for image in self.jump_frames:
       frame = pygame.transform.scale(pygame.image.load(image), (player_width, player_height))
       self.images_jump_r.append(frame)
 
-    for image in jump_frames:
+    for image in self.jump_frames:
       frame = pygame.transform.flip(pygame.transform.scale(pygame.image.load(image), (player_width, player_height) ), True, False)
       self.images_jump_l.append(frame)
 
