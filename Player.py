@@ -3,7 +3,12 @@ from configuration import *
 from MoveableObject import *
 
 class Player(MoveableObject):
-  def __init__(self):
+  def __init__(self, order = 1):
+
+    self.idle_frames = idle_frames_1 if order == 1 else idle_frames_2
+    self.run_frames = run_frames_1 if order == 1 else run_frames_2
+    self.jump_frames = jump_frames_l if order == 1 else jump_frames_2
+    
     MoveableObject.__init__(self)
 
     #initialize empty lists
@@ -53,7 +58,7 @@ class Player(MoveableObject):
 
     pos = self.rect.x + self.level.world_shift
 
-    frame = int(pos // 30) % len(self.images_list)
+    frame = int(pos // 5) % len(self.images_list)
     self.image = self.images_list[frame]
     
     
