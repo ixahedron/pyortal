@@ -9,9 +9,14 @@ mp_port2 = 10108
 game_title = 'Portal 2d wannabe'
 
 backstory_text = {
-             1 : "Lorem ipsum dolor sit amet, consectetur",
-             2 : "adipiscing elit. Donec vel diam",
-             3 : "et nisi euismod porta. Curabitur vitae ligula"
+             1 : "Ein Ninja bricht in ein Labor ein, um eine Formel zu stehlen.",
+             2 : "Dabei findet er eine Portal-Gun, die es ihm ermöglicht jeweils ein Portal an zwei verschieden Stellen zu erzeugen, um So von einer Stelle zu der Anderen zu gelangen.",
+             3 : "Diese Fähigkeit erlaubt es ihm erst in das Labor einzudringen und zu der Formel zu gelangen."
+             4 : "Der Singleplayer-Modus endet dann, wenn der Ninja diese Formel gefunden hat."
+             5 : "Im Multiplayer-Modus muss der Ninja zusammen mit einem anderen Ninja ebenfalls in ein Labor einbrechen."
+             6 : "Hier haben beide Ninja eine portal-Gun, aber auch das Labor ist besser geschützt."
+             7 : "In diesem Modus haben die Ninjas nur die Möglichkeit jeweils ein Portal zu erzeugen."
+             8 : "Um erfolgreich an die zweite Formel zu gelangen, müssen die Beiden Hindernisse überwinden, die nur gemeinsam überwunden werden können"
             }
 
 screen_x = 800
