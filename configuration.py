@@ -59,7 +59,7 @@ player_image = "res/Player_1/Idle__001.png"
 player_width = 40
 player_height = 60
 
-bg_image_default = "res/back.png"
+bg_image_default = "res/back_03.jpg"
 bg_image_01 = "res/back_03.jpg"
 
 platform_image = "res/platform_4.png"

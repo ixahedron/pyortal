@@ -50,3 +50,22 @@ def ask(start_text = ""):
     elif inkey != 47 and inkey > 45 and inkey < 58:
       current_string.append(chr(inkey))
     draw_input_field(screen, "".join(current_string))
+
+def ask_f(start_text = ""):
+  screen = pygame.display.get_surface()
+  pygame.font.init()
+  current_string = list(start_text)
+  draw_input_field(screen, "".join(current_string))
+  while True:
+    inkey = get_key()
+    if current_string == incorrect_input:
+      current_string = []
+    if inkey == K_BACKSPACE:
+      current_string = current_string[0:-1]
+    elif inkey == K_RETURN:
+      return "".join(current_string) + ".py"
+    elif inkey == K_ESCAPE or inkey == K_q:
+      return None
+    elif inkey < 147:
+      current_string.append(chr(inkey))
+    draw_input_field(screen, "".join(current_string))
