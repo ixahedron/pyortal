@@ -86,16 +86,25 @@ class MoveableObject(pygame.sprite.Sprite):
   def through_portal_check(self):
     # Portal check
     if self.portalable:
+      fst = None
+      snd = None
       if pygame.sprite.spritecollideany(self, self.level.portal_blue):
-        if self.level.portal_orange.sprite is not None:
-          self.rect.x = self.level.portal_orange.sprite.rect.x + self.level.portal_orange.sprite.direction[0]
-          self.rect.y = self.level.portal_orange.sprite.rect.y + self.level.portal_orange.sprite.direction[1]
-          self.change_direction(True)
+        fst = self.level.portal_blue.sprite
+        snd = self.level.portal_orange.sprite
       elif pygame.sprite.spritecollideany(self, self.level.portal_orange):
-        if self.level.portal_blue.sprite is not None:
-          self.rect.x = self.level.portal_blue.sprite.rect.x + self.level.portal_blue.sprite.direction[0]
-          self.rect.y = self.level.portal_blue.sprite.rect.y + self.level.portal_blue.sprite.direction[1]
-          self.change_direction(False)
+        snd = self.level.portal_blue.sprite
+        fst = self.level.portal_orange.sprite
+      if fst is not None and snd is not None:
+        delta = 0
+        if fst.direction is DOWN or fst.direction is UP:
+          if abs(fst.rect.x - snd.rect.x) > 20:
+            delta = self.rect.x - fst.rect.x
+        else:
+          if abs(fst.rect.y - snd.rect.y) > 20:
+            delta = self.rect.y - fst.rect.y
+        self.rect.x = snd.rect.x + (0 if snd.direction[1] == 0 else delta) + snd.direction[0]
+        self.rect.y = snd.rect.y + (0 if snd.direction[0] == 0 else delta) + snd.direction[1]
+        self.change_direction(fst is self.level.portal_blue.sprite)
 
   def flip(self):
     self.direction = LEFT if self.direction is RIGHT else RIGHT
