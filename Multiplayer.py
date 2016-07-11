@@ -222,6 +222,20 @@ def main(order, host = None):
         player.rect.left = start_left_shift + player.holded_object.rect.width + player.rect.width / 4
       current_level.shift_world(diff)
          
+    if object_start_shift.rect.top <= start_up_shift: # and current_level.world_shift < -current_level.left_border:
+      diff = start_up_shift - object_start_shift.rect.top
+      object_start_shift.rect.top = start_up_shift
+      if not player.hands_empty:
+        player.rect.top = start_up_shift
+      current_level.shift_world(0, diff)
+         
+    if player.rect.bottom >= start_down_shift: # and current_level.world_shift < -current_level.left_border:
+      diff = start_down_shift - player.rect.bottom
+      player.rect.bottom = start_down_shift
+      if not player.hands_empty:
+        player.holded_object.rect.top = player.rect.top
+      current_level.shift_world(0, diff)
+         
     
     # Goal reached
     if player.on_goal() and player2.on_goal():
