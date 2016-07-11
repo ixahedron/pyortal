@@ -16,6 +16,8 @@ window_size = (screen_x, screen_y)
 
 start_right_shift = screen_x * 0.7
 start_left_shift = screen_x * 0.3
+start_up_shift = screen_y * 0.2
+start_down_shift = screen_y * 0.8
 
 screen_x_center = int(screen_x * 0.5)
 screen_y_center = int(screen_y * 0.6)
@@ -88,3 +90,8 @@ UP = (0, -player_height - 3)
 DOWN = (0, 0.5 * player_height + 3)
 RIGHT = (0.5 * player_width + 3, 0)
 LEFT = (-3 - player_width, 0)
+
+# sounds
+background_sound = "res/manaosnesting1.wav"
+gamewon = "res/game_win.wav"
+

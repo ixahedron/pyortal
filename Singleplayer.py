@@ -9,11 +9,6 @@ from Level import *
 
 # Initialise mixer
 
-# sounds
-background_sound = "res/manaosnesting1.wav"
-laser_door = "res/laser_door.wav"
-gamewon = "res/game_win.wav"
-
 
 # Initialise pygame
 def initialise():
@@ -34,7 +29,6 @@ def main():
   clock = pygame.time.Clock()
   sound = pygame.mixer.Sound(background_sound)
   sound.play(-1)
-  
 
   #Initialise player
   player = Player()
@@ -132,12 +126,21 @@ def main():
         player.rect.left = start_left_shift + player.holded_object.rect.width + player.rect.width / 4
       current_level.shift_world(diff)
          
+    if object_start_shift.rect.top <= start_up_shift: # and current_level.world_shift < -current_level.left_border:
+      diff = start_up_shift - object_start_shift.rect.top
+      object_start_shift.rect.top = start_up_shift
+      if not player.hands_empty:
+        player.rect.top = start_up_shift
+      current_level.shift_world(0, diff)
+         
+    if player.rect.bottom >= start_down_shift: # and current_level.world_shift < -current_level.left_border:
+      diff = start_down_shift - player.rect.bottom
+      player.rect.bottom = start_down_shift
+      if not player.hands_empty:
+        player.holded_object.rect.top = player.rect.top
+      current_level.shift_world(0, diff)
+         
     
-    # Check for player still alive
-    # if dangers.collision(player.rect):
-      #print("Game lost!")
-      #end = True
-  
     # Goal reached
     if player.on_goal():
       if current_level_number < len(levels)-1:

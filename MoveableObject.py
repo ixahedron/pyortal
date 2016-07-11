@@ -76,10 +76,6 @@ class MoveableObject(pygame.sprite.Sprite):
     if self.speed_y < maximum_vertical_velocity:
       self.speed_y = 1 if self.speed_y == 0 else self.speed_y + gravity
 
-    if self.rect.y >= screen_y - self.rect.height and self.speed_y >= 0:
-      self.speed_y = 0
-      self.rect.y = screen_y - self.rect.height
-
   def collided_callback(self, left, right):
     return pygame.sprite.collide_rect(left, right)
 

@@ -21,6 +21,7 @@ class Level():
     self.exit = pygame.sprite.GroupSingle()
 
     self.world_shift = 0
+    self.world_shift_y = 0
     
     self.background = pygame.transform.scale(pygame.image.load(bg_image_default), window_size).convert()
     self.bg_1_x = -100
@@ -94,7 +95,7 @@ class Level():
     if self.exit is not None:
       self.exit.draw(screen)
 
-  def shift_world(self, shift_x):
+  def shift_world(self, shift_x, shift_y = 0):
     
     if shift_x > 0:
       self.bg_1_x += 1
@@ -113,30 +114,39 @@ class Level():
         self.bg_2_x = screen_x
 
     self.world_shift += shift_x
+    self.world_shift_y += shift_y
 
     if self.player2 is not None:
       self.player2.rect.x += shift_x
+      self.player2.rect.y += shift_y
 
     for platform in self.platforms:
       platform.rect.x += shift_x
+      platform.rect.y += shift_y
 
     for cube in self.cubes:
       if not cube.holded:
         cube.rect.x += shift_x
+        cube.rect.y += shift_y
     
     for button in self.buttons:
       button.rect.x += shift_x
+      button.rect.y += shift_y
 
     for door in self.doors:
       door.rect.x += shift_x
+      door.rect.y += shift_y
 
     if self.portal_blue.sprite is not None:
       self.portal_blue.sprite.rect.x += shift_x
+      self.portal_blue.sprite.rect.y += shift_y
     if self.portal_orange.sprite is not None:
       self.portal_orange.sprite.rect.x += shift_x
+      self.portal_orange.sprite.rect.y += shift_y
 
     if self.exit.sprite is not None:
       self.exit.sprite.rect.x += shift_x
+      self.exit.sprite.rect.y += shift_y
 
   def open_portal(self, click, is_blue, use_second_player = False):
     player = self.player2 if use_second_player else self.player

@@ -87,7 +87,7 @@ class Player(MoveableObject):
     button_collisions = pygame.sprite.spritecollideany(self, self.level.buttons)
     self.rect.y -= 2
 
-    if (platform_collisions or cube_collisions or button_collisions or door_collisions) or self.rect.bottom >= screen_y:
+    if (platform_collisions or cube_collisions or button_collisions or door_collisions):
       if self.hands_empty:
         self.speed_y = speed
       else:
