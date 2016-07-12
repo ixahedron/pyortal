@@ -93,6 +93,10 @@ class Map_editor():
       self.exit.sprite.rect.x += shift_x
       self.exit.sprite.rect.y += shift_y
 
+    if self.second_click_awaited:
+      self.current_coordinate = [x + y for (x, y) in zip(self.current_coordinate, (shift_x, shift_y))]
+
+
   def edit(self):
     screen = pygame.display.get_surface()
     pygame.display.update()
