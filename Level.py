@@ -27,9 +27,11 @@ class Level():
     self.bg_1_x = -100
     self.bg_2_x = screen_x - 100
 
-  def init_platforms(self, level):
+  def init_platforms(self, level, are_blacks = False):
+    p_type = NonPortalPlatform if are_blacks else Platform
+
     for platform in level:
-      block = Platform(platform[0], platform[1])
+      block = p_type(platform[0], platform[1])
 
       block.rect.x = platform[2]
       block.rect.y = platform[3]
@@ -371,6 +373,7 @@ class Level_01(Level):
     import level_01 as l
 
     self.init_platforms(l.level)
+    self.init_platforms(l.black_platforms, True)
     self.init_cubes(l.cubes)
     self.init_buttons(l.buttons, l.doors)
     
