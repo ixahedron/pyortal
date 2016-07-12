@@ -39,9 +39,9 @@ class Map_editor():
     self.buttons = pygame.sprite.Group()
     self.exit = pygame.sprite.GroupSingle()
 
-    # self.background = pygame.transform.scale(pygame.image.load(menu_image), window_size).convert() # perhaps if I find the image
-    self.background = pygame.Surface(window_size)
-    self.background.fill(BLACK)
+    self.background = pygame.transform.scale(pygame.image.load(bg_image_default), window_size).convert() # perhaps if I find the image
+    # self.background = pygame.Surface(window_size)
+    # self.background.fill(BLACK)
 
     self.shift_x = 0
     self.shift_y = 0
@@ -101,7 +101,7 @@ class Map_editor():
     screen = pygame.display.get_surface()
     pygame.display.update()
     
-    actions = {"p" : self.place_platform, "c" : self.place_cube, "b" : self.place_button, "d" : self.place_door, "e" : self.place_exit, "r" : self.remove_sprite}
+    actions = {"p" : self.place_platform, "n" : lambda: self.place_platform(True), "c" : self.place_cube, "b" : self.place_button, "d" : self.place_door, "e" : self.place_exit, "r" : self.remove_sprite}
     
     not_chosen = True
     second_click_awaited = False
@@ -129,6 +129,9 @@ class Map_editor():
 
           elif event.key == K_p:
             self.current_action = "p"
+
+          elif event.key == K_n:
+            self.current_action = "n"
 
           elif event.key == K_c:
             self.current_action = "c"
@@ -160,12 +163,14 @@ class Map_editor():
     pygame.display.quit()
     sys.exit()
 
-  def place_platform(self):
+  def place_platform(self, black = False):
     if self.second_click_awaited:
       pos = pygame.mouse.get_pos()
       self.second_click_awaited = False
 
-      p = Platform(abs(pos[0] - self.current_coordinate[0]), abs(pos[1] - self.current_coordinate[1]))
+      p_type = NonPortalPlatform if black else Platform
+
+      p = p_type(abs(pos[0] - self.current_coordinate[0]), abs(pos[1] - self.current_coordinate[1]))
       p.rect.x = min(pos[0], self.current_coordinate[0])
       p.rect.y = min(pos[1], self.current_coordinate[1])
 
@@ -231,6 +236,7 @@ class Map_editor():
     bottom = screen_y
 
     p = []
+    n = []
     c = []
     b = []
     d = []
@@ -244,7 +250,10 @@ class Map_editor():
         top = platform.rect.top - self.shift_y
       if platform.rect.bottom > bottom:
         bottom = platform.rect.bottom - self.shift_y
-      p.append([platform.rect.width, platform.rect.height, platform.rect.x - self.shift_x, platform.rect.y - self.shift_y])
+      if platform.portal_supporting:
+        p.append([platform.rect.width, platform.rect.height, platform.rect.x - self.shift_x, platform.rect.y - self.shift_y])
+      else:
+        n.append([platform.rect.width, platform.rect.height, platform.rect.x - self.shift_x, platform.rect.y - self.shift_y])
 
     for cube in self.cubes:
       c.append((cube.rect.x - self.shift_x, cube.rect.y - self.shift_y))
@@ -262,6 +271,10 @@ class Map_editor():
       f.write("# every platform: width, height, x, y\n")
       f.write("level = ")
       f.write(repr(p) + "\n")
+      f.write("\n")
+
+      f.write("black_platforms = ")
+      f.write(repr(n) + "\n")
       f.write("\n")
 
       f.write("left_border = " + str(left) + "\n")
