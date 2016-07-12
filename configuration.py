@@ -9,13 +9,15 @@ mp_port2 = 10104
 game_title = 'Portal 2d wannabe'
 
 backstory_text = {
-             1 : "Ein Ninja bricht in ein Labor ein",
-             2 : "um eine Formel zu stehlen.",
-             3 : "Dabei findet er ein Portal-Gun!",
-             4 : "Mit diesem muss er zu der Formel gelangen.",
-             5 : "Doch dabei erwarten ihn keine Gegner",
-             6 : "in dem aufgegebenen Labor,",
-             7 : "sondern Puzzles."
+             0 : "A ninja breaks into a lab -- he has to",
+             1 : "steal a secret formula discovered long ago.",
+             2 : "And he finds a portal gun on the way!",
+             3 : "That should be enough to get to the formula.",
+             4 : "He's ready for any enemies, but there",
+             5 : "are none in the abandoned",
+             6 : "Aperture Laboratories,",
+             7 : "only the puzzles of test chambers",
+             8 : "long since forgotten."
             }
 
 screen_x = 800
