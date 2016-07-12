@@ -135,7 +135,9 @@ def main():
             player.holded_object.stop()
 
         if (event.key == K_s):
-          print(player.movement_key_pressed)
+          print(current_level.world_shift_y)
+          print(player.rect.top)
+          print()
   
       if event.type == MOUSEBUTTONUP:
         if event.button == 1:
@@ -162,14 +164,14 @@ def main():
         player.rect.left = start_left_shift + player.holded_object.rect.width + player.rect.width / 4
       current_level.shift_world(diff)
          
-    if object_start_shift.rect.top <= start_up_shift: # and current_level.world_shift < -current_level.left_border:
+    if object_start_shift.rect.top <= start_up_shift and current_level.world_shift_y < -current_level.top_border:
       diff = start_up_shift - object_start_shift.rect.top
       object_start_shift.rect.top = start_up_shift
       if not player.hands_empty:
         player.rect.top = start_up_shift
       current_level.shift_world(0, diff)
          
-    if player.rect.bottom >= start_down_shift: # and current_level.world_shift < -current_level.left_border:
+    if player.rect.bottom >= start_down_shift and current_level.bottom_border + current_level.world_shift_y > screen_y:
       diff = start_down_shift - player.rect.bottom
       player.rect.bottom = start_down_shift
       if not player.hands_empty:
