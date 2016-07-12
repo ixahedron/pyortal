@@ -93,8 +93,8 @@ portal_orange_image = "res/portal_orange.png"
 portal_width = 80
 portal_height = 80
 
-exit_image = "res/exit_image.png"
-exit_width = 70
+exit_image = "res/exit_elevator.png"
+exit_width = 50
 exit_height = 70
 
 # Directions

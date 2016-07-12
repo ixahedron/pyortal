@@ -13,6 +13,8 @@ level = [
          [exit_width + 20, int(0.7 * screen_y - exit_height), 1580, int(0.3 * screen_y + exit_height)]
          ]
 
+black_platforms = []
+
 left_border = level[0][2]
 top_border = -50
 bottom_border = screen_y

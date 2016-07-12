@@ -229,6 +229,9 @@ class Map_editor():
       if p.rect.collidepoint(pos):
         p.kill()
 
+  def open_map(self, filename):
+    l = __import__(filename)
+
   def save(self, filename):
     left = 0
     right = screen_x
