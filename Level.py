@@ -385,3 +385,24 @@ class Level_01(Level):
     self.exit.sprite = Exit()
     self.exit.sprite.rect.x = l.exit_x
     self.exit.sprite.rect.y = l.exit_y
+
+
+class Level_02(Level):
+
+  def __init__(self, player, player2 = None):
+    Level.__init__(self, player, player2)
+
+    import level02 as l
+
+    self.init_platforms(l.level)
+    self.init_platforms(l.black_platforms, True)
+    self.init_cubes(l.cubes)
+    self.init_buttons(l.buttons, l.doors)
+    
+    self.left_border = l.left_border
+    self.top_border = l.top_border
+    self.bottom_border = l.bottom_border
+
+    self.exit.sprite = Exit()
+    self.exit.sprite.rect.x = l.exit_x
+    self.exit.sprite.rect.y = l.exit_y

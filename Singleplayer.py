@@ -73,6 +73,7 @@ def main():
   
   # Initialise levels
   levels = []
+  levels.append(Level_02(player))
   levels.append(Level_01(player))
   
   current_level_number = 0 # start_with_level_number
