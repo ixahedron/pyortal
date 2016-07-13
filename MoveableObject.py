@@ -107,56 +107,37 @@ class MoveableObject(pygame.sprite.Sprite):
     self.image = pygame.transform.flip(self.image, True, False)
 
   def change_direction(self, out_of_the_blue):
-    fst_portal_dir = self.level.portal_blue.sprite.direction
-    snd_portal_dir = self.level.portal_blue.sprite.direction
+    fst_portal_dir = self.level.portal_blue.sprite.direction[2]
+    snd_portal_dir = (self.level.portal_blue.sprite.direction[2] + PI) % (2 * PI)
     if out_of_the_blue:
-      snd_portal_dir = self.level.portal_orange.sprite.direction
+      snd_portal_dir = (self.level.portal_orange.sprite.direction[2] + PI) % (2 * PI)
     else:
-      fst_portal_dir = self.level.portal_orange.sprite.direction
+      fst_portal_dir = self.level.portal_orange.sprite.direction[2]
     
-    # This is just horrible. TODO: do some school-level geometry magic and figure out how to generalise this calculation.
-    if fst_portal_dir is LEFT:
-      if snd_portal_dir is LEFT:
+    angle_delta = abs(snd_portal_dir - fst_portal_dir)
+    speed = (self.speed_x, self.speed_y)
+    
+    if angle_delta == 0:
+      pass
+    elif angle_delta == PI:
+      if fst_portal_dir % PI == 0:
+        speed = (-self.speed_x, self.speed_y)
+      else:
+        speed = (self.speed_x, -self.speed_y)
+    else:
+      if fst_portal_dir % PI == 0:
+        speed = (0, abs(self.speed_x)) if snd_portal_dir < PI else (0, -abs(self.speed_x))
+      else:
+        speed = (-abs(self.speed_y), 1) if snd_portal_dir == 0 else (abs(self.speed_y), 1)
+
+    self.speed_x = speed[0]
+    self.speed_y = speed[1]
+
+    if (fst_portal_dir == 0 or fst_portal_dir == PI) and fst_portal_dir == ((snd_portal_dir + PI) % (2 * PI)) :
+      self.movement_key_pressed = False
+    if fst_portal_dir == 0.5 * PI or fst_portal_dir == 1.5 * PI:
+      if snd_portal_dir == 0 or snd_portal_dir == PI:
         self.movement_key_pressed = False
-        self.speed_x *= -1
-      if snd_portal_dir is DOWN:
-        self.speed_y = abs(self.speed_x)
-        self.speed_x = 0
-      if snd_portal_dir is UP:
-        self.speed_y = -abs(self.speed_x)
-        self.speed_x = 0
-    if fst_portal_dir is RIGHT:
-      if snd_portal_dir is RIGHT:
-        self.movement_key_pressed = False
-        self.speed_x *= -1
-      if snd_portal_dir is DOWN:
-        self.speed_y = abs(self.speed_x)
-        self.speed_x = 0
-      if snd_portal_dir is UP:
-        self.speed_y = -abs(self.speed_x)
-        self.speed_x = 0
-    if fst_portal_dir is UP:
-      if snd_portal_dir is UP:
-        self.speed_y *= -1
-      if snd_portal_dir is RIGHT:
-        self.movement_key_pressed = False
-        self.speed_x = abs(self.speed_y)
-        self.speed_y = 1
-      if snd_portal_dir is LEFT:
-        self.movement_key_pressed = False
-        self.speed_x = -abs(self.speed_y)
-        self.speed_y = 1
-    if fst_portal_dir is DOWN:
-      if snd_portal_dir is DOWN:
-        self.speed_y *= -1
-      if snd_portal_dir is RIGHT:
-        self.movement_key_pressed = False
-        self.speed_x = abs(self.speed_y)
-        self.speed_y = 1
-      if snd_portal_dir is LEFT:
-        self.movement_key_pressed = False
-        self.speed_x = -abs(self.speed_y)
-        self.speed_y = 1
 
   def horizontal_collision_handler(self, block_collisions, with_moveable = False):
     for block in block_collisions:

@@ -97,11 +97,14 @@ exit_image = "res/exit_elevator.png"
 exit_width = 50
 exit_height = 70
 
+# Pi constant, good enough for our purposes and doesn't cause float unprecision
+PI = 3
+
 # Directions
-UP = (0, -player_height - 3)
-DOWN = (0, 0.5 * player_height + 3)
-RIGHT = (0.5 * player_width + 3, 0)
-LEFT = (-3 - player_width, 0)
+UP = (0, -player_height - 3, 0.5 * PI)
+DOWN = (0, 0.5 * player_height + 3, 1.5 * PI)
+RIGHT = (0.5 * player_width + 3, 0, 0)
+LEFT = (-3 - player_width, 0, PI)
 
 # sounds
 background_sound = "res/manaosnesting1.wav"
