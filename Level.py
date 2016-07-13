@@ -155,9 +155,9 @@ class Level():
     portal_gun_point = (player.rect.right, player.rect.centery) if player.direction is RIGHT else (player.rect.left, player.rect.centery)
     
     # The logic in the key of sorted() function below is off a bit. Consider finding a better condition.
-    platforms_in_the_way = sorted([p for p in self.platforms if p.portal_supporting and p.intersection(portal_gun_point, click) is not None], key = lambda p: abs(p.intersection_point[1] - portal_gun_point[1]))
+    platforms_in_the_way = sorted([p for p in self.platforms if p.intersection(portal_gun_point, click) is not None], key = lambda p: abs(p.intersection_point[1] - portal_gun_point[1]))
     obstacles = [d for d in self.doors if d.intersection(portal_gun_point, click)]
-    can_open = len(platforms_in_the_way) > 0 and len(obstacles) == 0
+    can_open = len(platforms_in_the_way) > 0 and platforms_in_the_way[0].portal_supporting and len(obstacles) == 0
 
     if can_open:
       platform_for_portal = platforms_in_the_way[0]
