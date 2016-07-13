@@ -149,9 +149,13 @@ class Map_editor():
             self.current_action = "r"
 
           elif event.key == K_s:
-            filename = Textfield.ask_f("level")
+            filename = Textfield.ask_f("level") + ".py"
             self.save(filename)
             # not_chosen = False
+
+          elif event.key == K_o:
+            filename = Textfield.ask_f("level")
+            self.open_map(filename)
 
         elif event.type == MOUSEBUTTONUP:
           if event.button == 1:
@@ -231,6 +235,58 @@ class Map_editor():
 
   def open_map(self, filename):
     l = __import__(filename)
+
+    self.init_platforms(l.level)
+    self.init_platforms(l.black_platforms, True)
+    self.init_cubes(l.cubes)
+    self.init_buttons(l.buttons, l.doors)
+    
+    self.exit.sprite = Exit()
+    self.exit.sprite.rect.x = l.exit_x
+    self.exit.sprite.rect.y = l.exit_y
+
+  def init_platforms(self, level, are_blacks = False):
+    p_type = NonPortalPlatform if are_blacks else Platform
+
+    for platform in level:
+      block = p_type(platform[0], platform[1])
+
+      block.rect.x = platform[2]
+      block.rect.y = platform[3]
+
+      self.platforms.add(block)
+
+  def init_cubes(self, cubes):
+    for (i, cube) in enumerate(cubes):
+      block = Cube(i)
+
+      block.rect.x = cube[0]
+      block.rect.y = cube[1]
+
+      block.level = self
+
+      self.cubes.add(block)
+
+  def init_buttons(self, buttons, doors):
+    for (i, button) in enumerate(buttons):
+      block = Button()
+
+      block.rect.x = button[0]
+      block.rect.bottom = button[1]
+
+      door = Door()
+
+      door.rect.x = doors[i][0]
+      door.rect.bottom = doors[i][1]
+
+      door.button = block
+
+      block.door = door
+
+      block.level = self
+
+      self.doors.add(door)
+      self.buttons.add(block)
 
   def save(self, filename):
     left = 0

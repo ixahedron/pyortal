@@ -63,7 +63,7 @@ def ask_f(start_text = ""):
     if inkey == K_BACKSPACE:
       current_string = current_string[0:-1]
     elif inkey == K_RETURN:
-      return "".join(current_string) + ".py"
+      return "".join(current_string)
     elif inkey == K_ESCAPE or inkey == K_q:
       return None
     elif inkey < 147:
