@@ -353,7 +353,8 @@ class Level_M_01(Level):
             
 
     self.left_border = level[0][2]
-
+    self.top_border = 0
+    self.bottom_border = screen_y
 
 
     self.init_platforms(level)
