@@ -26,6 +26,9 @@ Den gespeicherten Level muss man aber noch manuell ins Spiel einbauen. Dazu:
 - In `Level.py` eine neue Klasse analog zu gegebenen definieren mit angepasstem _import statement_
 - Die neue Levelklasse in `Singleplayer.py` bzw. `Multiplayer.py` in die Liste von Levels einfügen.
 
+Es besteht die Möglichkeit, einen bereits existierenden Level zu editieren. Den kann man mit `o` öffnen. Für eine Leveldatei `level.py` sollte man `level` eingeben.  
+Es gibt keine Safeguards, weil das Editor primär nicht für den Spieler entworfen wurde. Also man muss immer z.B. richtige Dateinamen eingeben oder den Exit platzieren.
+
 ---
 
 ### Gruppenteilnehmer
