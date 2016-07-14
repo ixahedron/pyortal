@@ -42,8 +42,7 @@ class Level():
     for (i, cube) in enumerate(cubes):
       block = Cube(i)
 
-      block.rect.x = cube[0]
-      block.rect.y = cube[1]
+      block.rect.x, block.rect.y = cube
 
       block.level = self
 
@@ -53,13 +52,11 @@ class Level():
     for (i, button) in enumerate(buttons):
       block = Button()
 
-      block.rect.x = button[0]
-      block.rect.bottom = button[1]
+      block.rect.x, block.rect.bottom = button
 
       door = Door()
 
-      door.rect.x = doors[i][0]
-      door.rect.bottom = doors[i][1]
+      door.rect.x, door.rect.bottom = doors[i]
 
       door.button = block
 

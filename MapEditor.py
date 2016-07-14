@@ -187,8 +187,7 @@ class Map_editor():
     pos = pygame.mouse.get_pos()
 
     p = Cube(self.cube_index)
-    p.rect.x = pos[0]
-    p.rect.y = pos[1]
+    p.rect.x, p.rect.y = pos
 
     self.cube_index += 1
     self.cubes.add(p)
@@ -197,8 +196,7 @@ class Map_editor():
     pos = pygame.mouse.get_pos()
 
     p = Button()
-    p.rect.x = pos[0]
-    p.rect.bottom = pos[1]
+    p.rect.x, p.rect.bottom = pos
 
     self.buttons.add(p)
     
@@ -208,8 +206,7 @@ class Map_editor():
     pos = pygame.mouse.get_pos()
 
     p = Door()
-    p.rect.x = pos[0]
-    p.rect.bottom = pos[1]
+    p.rect.x, p.rect.bottom = pos
 
     self.doors.add(p)
     
@@ -219,8 +216,7 @@ class Map_editor():
     pos = pygame.mouse.get_pos()
 
     p = Exit()
-    p.rect.x = pos[0]
-    p.rect.y = pos[1]
+    p.rect.x, p.rect.y = pos
 
     self.exit.sprite = p
 
@@ -260,8 +256,7 @@ class Map_editor():
     for (i, cube) in enumerate(cubes):
       block = Cube(i)
 
-      block.rect.x = cube[0]
-      block.rect.y = cube[1]
+      block.rect.x, block.rect.y = cube
 
       block.level = self
 
@@ -271,13 +266,11 @@ class Map_editor():
     for (i, button) in enumerate(buttons):
       block = Button()
 
-      block.rect.x = button[0]
-      block.rect.bottom = button[1]
+      block.rect.x, block.rect.bottom = button
 
       door = Door()
 
-      door.rect.x = doors[i][0]
-      door.rect.bottom = doors[i][1]
+      door.rect.x, door.rect.bottom = doors[i]
 
       door.button = block
 

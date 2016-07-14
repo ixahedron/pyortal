@@ -130,8 +130,7 @@ class MoveableObject(pygame.sprite.Sprite):
       else:
         speed = (-abs(self.speed_y), 1) if snd_portal_dir == 0 else (abs(self.speed_y), 1)
 
-    self.speed_x = speed[0]
-    self.speed_y = speed[1]
+    self.speed_x, self.speed_y = speed
 
     if (fst_portal_dir == 0 or fst_portal_dir == PI) and fst_portal_dir == ((snd_portal_dir + PI) % (2 * PI)) :
       self.movement_key_pressed = False
